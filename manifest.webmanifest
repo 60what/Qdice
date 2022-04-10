@@ -1,0 +1,14 @@
+{
+  "background_color": "blue",
+  "description": "Quick Dice game",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/x-icon"
+    }
+  ],
+  "name": "Quick Dice game",
+  "short_name": "Dice",
+  "start_url": "index.html"
+}
