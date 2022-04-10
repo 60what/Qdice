@@ -1,16 +1,12 @@
 {
-  "name": "Quick Dice game",
+  "name": "Quick Dice",
   "icons": [
     {
-      "src": "./favicon.ico",
-      "sizes": "16x16",
-      "type": "image/x-icon"
+      "src": "./favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
     }
   ],
 
-  "background_color": "blue",
-  "description": "Quick Dice game",
-  "display": "standalone",
-  "short_name": "Dice",
-  "start_url": "./index.html"
+  "display": "standalone"
 }
