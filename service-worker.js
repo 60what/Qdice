@@ -2,7 +2,7 @@
 var CACHE_NAME = 'static-cache';
 var urlsToCache = [
   './',
-  './favicon.png'
+  './index.html'
 ];
 self.addEventListener('install', function(event) {
   event.waitUntil(

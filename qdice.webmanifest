@@ -2,12 +2,13 @@
   "name": "Quick Dice",
   "icons": [
     {
-      "src": "./favicon.png",
-      "sizes": "256x256",
+      "src": "./dice-icon192.png",
+      "sizes": "192x192",
       "type": "image/png"
     }
   ],
 
   "start_url": "./",
-  "display": "standalone"
+  "display": "standalone",
+  "background_color": "#222"
 }
