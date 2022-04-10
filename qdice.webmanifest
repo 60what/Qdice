@@ -2,7 +2,7 @@
   "name": "Quick Dice",
   "icons": [
     {
-      "src": "./dice-icon192.png",
+      "src": "./qdice192.png",
       "sizes": "192x192",
       "type": "image/png"
     }
@@ -10,5 +10,4 @@
 
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#222"
 }
