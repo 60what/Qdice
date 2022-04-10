@@ -10,7 +10,7 @@
 
   "background_color": "blue",
   "description": "Quick Dice game",
-  "display": "fullscreen",
+  "display": "standalone",
   "short_name": "Dice",
   "start_url": "./index.html"
 }
