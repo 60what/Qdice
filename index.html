@@ -487,11 +487,14 @@ function sfc32(a, b, c, d) {
 
 
 
+/* -------------------------------------
+   register a service worker for offline
+   ------------------------------------- */
 
 
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
+  navigator.serviceWorker.register('./service-worker.js')
   .then(function(registration) {
     console.log('Registered:', registration);
   })
