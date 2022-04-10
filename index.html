@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Qwixx Dice</title>
-	<link rel="icon" type="image/x-icon" href="./favicon.ico"/>
-	<link rel="manifest" href="./qdice.webmanifest"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<title>Quick Dice</title>
+
+<link rel="icon" type="image/png" href="./favicon.png"/>
+<link rel="manifest" href="./qdice.webmanifest"/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+
 
 <style>
 
@@ -147,6 +152,8 @@ body {
 
 
 </style>
+
+
 
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;">
@@ -479,11 +486,6 @@ function sfc32(a, b, c, d) {
 }
 
 
-if('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js', {scope: './index.html'})
-}
-	
-	
 
 </script>
 </body>
