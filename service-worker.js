@@ -2,6 +2,9 @@
 var CACHE_NAME = 'static-cache';
 var urlsToCache = [
   './',
+  '/icon192.png',
+  '/Roboto-Black.ttf',
+  '/Verdana-Bold.ttf',
 ];
 self.addEventListener('install', function(event) {
   event.waitUntil(
