@@ -9,6 +9,8 @@
 
 <link rel="manifest" href="./qdice.webmanifest"/>
 
+<link href="./Roboto.ttf" rel="stylesheet" type="text/css">
+
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
 
@@ -30,6 +32,8 @@
   --drk: #222;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
+
 html, body { width: 100%; height: 100%; }
 
 body {
@@ -40,6 +44,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-family: 'Roboto', serif;
+  font-weight: 900;
 }
 
 .page1 {
@@ -107,8 +114,6 @@ body {
 
 	/* numerals start hidden and are set to black by defualt */
 .numeral {
-  font-family: "Verdana", sans-serif;
-  font-weight: 900;
   color: black;
   font-size: 150%;
   background-color: white;
@@ -132,8 +137,6 @@ body {
 
 	/* some button features are set relative to the font size */
 .buttn {
-  font-family: "Verdana", sans-serif;
-  font-weight: 900;
   color: var(--drk);
   font-size: 125%;
   text-shadow: 0 .03em .05em var(--tan);
