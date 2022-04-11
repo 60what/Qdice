@@ -9,8 +9,6 @@
 
 <link rel="manifest" href="./qdice.webmanifest"/>
 
-<link href="./Roboto.ttf" rel="stylesheet" type="text/css">
-
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
 
@@ -32,7 +30,8 @@
   --drk: #222;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
+@font-face { font-family: 'Roboto'; src: url('./Roboto-Black.ttf') format('truetype'); }
+@font-face { font-family: 'Verdana'; src: url('./Verdana-Bold.ttf') format('truetype'); }
 
 html, body { width: 100%; height: 100%; }
 
@@ -44,9 +43,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-family: 'Roboto', serif;
-  font-weight: 900;
+  font-family: 'Verdana';
 }
 
 .page1 {
@@ -126,6 +123,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: opacity .5s;
+  font-family: 'Roboto';
 }
 
 	/* numerals on the 3rd and following dice are set to white */
