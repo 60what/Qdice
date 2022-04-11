@@ -48,7 +48,10 @@ body {
 
 .page1 {
   position: absolute;
-  xbackground-color: rgba(8, 8, 8, 0.3);
+//  background-color: rgba(8, 8, 8, 0.3);
+  width: 9em;
+  height: 16em;
+  transform-origin: 4.5em 8em;
 }
 
 .dice_mat {
@@ -56,6 +59,8 @@ body {
   background-color: var(--drk);
   border-radius: .33em;
   box-shadow: 0 0 .33em black;
+  width: 7em;
+  height: 10em;
   margin: 1em 0 0 1em;
 }
 
@@ -68,17 +73,21 @@ body {
   align-items: center;
   justify-content: center;
   visibility: visible;
-  width: 2em;
-  height: 2em;
   margin: 1em 0 0 1em;
   transition: margin 0s ease-out;
+  width: 2em;
+  height: 2em;
+  top: 0;
+  left: 0;
 }
 
+.dice:nth-child(2n + 2) { left: 3em; }
+
 	/* the first 2 dice remain white, the rest are colored */
-.dice:nth-child(4n + 3) { background-image: radial-gradient(var(--red) 70%, black 115%); }
-.dice:nth-child(4n + 4) { background-image: radial-gradient(var(--yel) 70%, black 115%); }
-.dice:nth-child(4n + 5) { background-image: radial-gradient(var(--grn) 70%, black 115%); }
-.dice:nth-child(4n + 6) { background-image: radial-gradient(var(--blu) 70%, black 115%); }
+.dice:nth-child(4n + 3) { top: 3em; background-image: radial-gradient(var(--red) 70%, black 115%); }
+.dice:nth-child(4n + 4) { top: 3em; background-image: radial-gradient(var(--yel) 70%, black 115%); }
+.dice:nth-child(4n + 5) { top: 6em; background-image: radial-gradient(var(--grn) 70%, black 115%); }
+.dice:nth-child(4n + 6) { top: 6em; background-image: radial-gradient(var(--blu) 70%, black 115%); }
 
 	/* the 4 ghost dice are transparent and start hidden */
 .dice:nth-child(n + 7) {
@@ -145,13 +154,15 @@ body {
   height: 1.84em;
   border-radius: .3em;
   border: .08em solid var(--drk);
-  margin: .333em 0 0 .333em;
+  margin: 9.333em 0 0 .333em;
   text-align: center;
+  left: 3.533em;
 }
 
-.buttn div { font-size: 40%; }
-
+.shake { left: 1em; }
 .shake:active { opacity: 0.3; }
+
+.buttn div { font-size: 40%; }
 
 
 
@@ -225,7 +236,7 @@ body {
     </div>
   </div>
 
-<div onclick="toggle_faces();">#</div>
+  <div onclick="toggle_faces();" style="position: absolute; bottom: 0;">#</div>
 
 </div>
 
@@ -236,7 +247,6 @@ body {
 
 
   var landscape;
-  var jiggle = Array(12).fill(1);
 
   var seed = -1;  /* indicates dice not shaken yet */
   var dice_locked = 0;  /* counts the dice taken out */
@@ -255,6 +265,8 @@ body {
 
   function draw_page1() {
 
+    let rotated = 0;
+
 	/* get objects for the dice and buttons */
 
     let pg = document.getElementById('page1').style;
@@ -265,52 +277,34 @@ body {
 	/* determine orientation and scale from screen dimensions */
 
     if (window.innerHeight < window.innerWidth) {
-
-      landscape = 1;
       if (window.innerHeight * 16 < window.innerWidth * 9) {
         pg.fontSize = window.innerHeight / 9 + 'px';
       } else {
         pg.fontSize = window.innerWidth / 16 + 'px';
       }
+      if (!landscape) rotated = 1;
+      landscape = 1;
+
     } else {
 
-      landscape = 0;
       if (window.innerHeight * 9 > window.innerWidth * 16) {
         pg.fontSize = window.innerWidth / 9 + 'px';
       } else {
         pg.fontSize = window.innerHeight / 16 + 'px';
       }
+      if (landscape) rotated = 1;
+      landscape = 0;
     }
 
-	/* a page should be largest available 16x9 space */
+    if (rotated) {
+      pg.transform = landscape ? 'rotate(-90deg)' : 'rotate(0deg)';
+      shake.transform = roll.transform = landscape ? 'rotate(90deg)' : 'rotate(0deg)';
 
-    pg.height = (landscape ? 9 : 16) + 'em';
-    pg.width = (landscape ? 16 : 9) + 'em';
-
-	/* size the dice mat */
-
-    mat.style.height = (landscape ? 7 : 10) + 'em';
-    mat.style.width = (landscape ? 10 : 7) + 'em';
-
-	/* buttons are placed relative to the page corner */
-
-    shake.top = (landscape ? 3.533 : 9) + 'em';
-    shake.left = (landscape ? 9 : 1) + 'em';
-    roll.top = (landscape ? 1 : 9) + 'em';
-    roll.left = (landscape ? 9 : 3.533) + 'em';
-
-	/* place dice, ghost dice are under colored dice */
-
-    for (let i = 0; i < 10; i++) {
-
-      let x = Math.floor(i / 2) - Math.floor(i / 6) * 2;
-      let y = (i + landscape) % 2;
-
-      mat.children[i].style.top = 3 * (landscape ? y : x) + 'em';
-      mat.children[i].style.left = 3 * (landscape ? x : y) + 'em';
+      for (let i = 0; i < 6; i++) {
+        mat.children[i].style.transitionDuration = '0s';
+        mat.children[i].style.transform = landscape ? 'rotate(90deg)' : 'rotate(0deg)';
+      }
     }
-
-    add_jiggle(0);
 
   }
 
@@ -371,35 +365,20 @@ body {
 
 	/* shaking the dice jiggles them */
 
-    for (let i = 0; i < 12; i++) {
-      jiggle[i] = .55 + .9 * Math.random();
-    }
-
-    add_jiggle(.2);
+    jiggle(.2);
 
   }
 
 
 
-  function add_jiggle(anim) {
+  function jiggle(anim) {
 
     for (let i = 0; i < 6 ; i++) {
       let d = document.getElementById('dice_mat').children[i].style;
 
       d.transitionDuration = anim + 's';
-      d.marginTop = (landscape ? 2 - jiggle[i] : jiggle[i + 6]) + 'em';
-      d.marginLeft = (landscape ? jiggle[i + 6] : jiggle[i]) + 'em';
-    }
-
-  }
-
-
-
-  function clear_jiggle() {
-
-    for (let i = 0; i < 6; i++) {
-      document.getElementById('dice_mat').children[i].style.margin = '1em 0 0 1em';
-      jiggle[i * 2] = jiggle[i * 2 + 1] = 1;
+      d.marginTop = .55 + .9 * Math.random() + 'em';
+      d.marginLeft = .55 + .9 * Math.random() + 'em';
     }
 
   }
@@ -437,16 +416,15 @@ body {
 
     if (seed < 0) return;
 
-	/* parse and display the rolls */
+	/* parse the rolls, display each and remove jiggle */
 
     let rolled = '00000' + Math.floor(seed * (6 ** 6)).toString(6);
     rolled = rolled.substr(rolled.length - 6);
     
     for (let i = 0; i < 6; i++) {
       reveal_face(i, parseInt(rolled.charAt(5 - i)));
+      document.getElementById('dice_mat').children[i].style.margin = '1em 0 0 1em';
     }
-
-    clear_jiggle();
 
 	/* disable the roll button until dice are shaken again */
 
