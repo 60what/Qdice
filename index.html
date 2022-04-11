@@ -4,7 +4,7 @@
 
 <title>Quick Dice</title>
 
-<link rel="icon" type="image/png" href="./qdice192.png">
+<link rel="icon" type="image/png" href="./test.png">
 <link rel="apple-touch-icon" href="./qdice192.png">
 
 <link rel="manifest" href="./qdice.webmanifest"/>
@@ -497,13 +497,7 @@ function sfc32(a, b, c, d) {
 
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js')
-  .then(function(registration) {
-    console.log('Registered:', registration);
-  })
-  .catch(function(error) {
-    console.log('Registration failed: ', error);
-  });
+  navigator.serviceWorker.register('./service-worker.js');
 }
 
 
