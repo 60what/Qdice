@@ -2,20 +2,19 @@
   "name": "Quick Dice",
   "icons": [
     {
-      "src": "./test.png",
+      "src": "./icon192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     { 
-      "src": "./qdice192.png",
-      "sizes": "192x192",
+      "src": "./icon230.png",
+      "sizes": "230x230",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
 
-  "background_color": "red",
   "start_url": "./",
   "display": "standalone"
 }
