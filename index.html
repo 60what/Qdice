@@ -49,7 +49,6 @@ body {
 
 .page1 {
   position: absolute;
-//  background-color: rgba(8,8,8,0.3);
   width: 9em;
   height: 16em;
   transform-origin: 4.5em 8em;
@@ -62,7 +61,7 @@ body {
   width: 9em; height: 16em;
   margin-right: 4.5em; right: 50vmin;
   transition-property: margin, right;
-  background-color: rgba(255,255,255,0.7);
+  background-color: rgba(255,255,255,.7);
 }
 
 .scorebars {              right: 2em; color: var(--red);
@@ -75,9 +74,10 @@ body {
 .scorebars:nth-child(3) { right: 4.8em; color: var(--grn); }
 .scorebars:nth-child(4) { right: 6.2em; color: var(--blu); }
 
-.locked_bar > .tile { background-color: rgba(255,255,255,0.15); }
+.locked_bar > .tile { background-color: rgba(255,255,255,.15); }
+.locked_bar > .tile:nth-child(11) { opacity: 1; }
+.locked_bar > .lock.tile_old { background-color: rgba(255,255,255,.5); }
 .locked_bar > .tile_sel { background-color: white; opacity: .7; }
-.locked_bar > .lock { opacity: 1; }
 
 .tile {
   position: relative;
@@ -86,7 +86,7 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: .2em;
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255,255,255,.5);
 }
 
 .tile > span {
@@ -99,24 +99,80 @@ body {
   font-size: 80%;
 }
 
-.tile_sel { background-color: white; }
-.tile_sel > span { background-color: currentColor; }
-.tile_sel > span > span { color: white; }
+.tile_old > span > span { color: transparent; }
 
-.tile_off { background-color: rgba(255,255,255,0.15); }
+.tile_sel > span > span { color: white; }
+.tile_sel > span { background-color: currentColor; }
+.tile_sel { background-color: white; }
+
+.tile_off { background-color: rgba(255,255,255,.15); }
 
 .lock, .lock > span { border-radius: 50%; }
 
 .penaltybar {
-  right: 7.6em; top: 9.3em; color: #bbb;
   position: absolute;
-  width: 1.4em;
+  width: 1.4em; right: 7.6em; top: 9.3em;
+  color: #aaa;
 }
 
-.penaltybar > div:nth-child(1) { color: var(--drk); }
-
-.penaltybar > div { background-color: currentColor; }
+.penalty_sel { color: var(--drk); }
+.penaltybar > div { background-color: currentColor !important; }
 .penaltybar > div > span { background-color: #eee; font-size: 38%; }
+
+.pointsbar {
+  position: absolute;
+  width: 1.4em; right: 7.6em; top: .7em;
+  color: #999;
+}
+
+.pointsbox {             color: var(--red);
+  position: relative;
+  width: 1.2em; height: 1.2em; margin: .1em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  background-color: #eee;
+}
+
+.pointsbox:nth-child(2) { color: var(--yel); }
+.pointsbox:nth-child(3) { color: var(--grn); }
+.pointsbox:nth-child(4) { color: var(--blu); }
+.pointsbox:nth-child(5) { color: #999; }
+.pointsbox:nth-child(6) { color: var(--drk); }
+
+.pointsbox > span {
+  position: absolute;
+  font-family: 'Roboto-Black', sans-serif;
+  font-size: .55em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: .1em solid currentColor;
+  width: 1.9em; height: 1.5em;
+  border-radius: .4em;
+  margin: 0 0 .16em 0;
+}
+
+.pointsbox > div {
+  position: absolute;
+  width: .4em; height: .4em;
+  background-color: currentColor;
+  top: .07em; left: -.05em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pointsbox > div >span {
+  position: absolute;
+  color: white;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  font-size: .4em;
+  top: -.2em;
+}
 
 /* ------------------------------------------------------------ */
 
@@ -313,12 +369,15 @@ body {
     <div class="scorebars"></div>
     <div class="scorebars"></div>
     <div class="scorebars"></div>
-    <div class="penaltybar">
-      <div class="tile"><span><span>PASS</span></span></div>
-      <div class="tile"><span><span>PASS</span></span></div>
-      <div class="tile"><span><span>PASS</span></span></div>
-      <div class="tile"><span><span>PASS</span></span></div>
-   </div>
+    <div id="penaltybar" class="penaltybar"></div>
+    <div id="pointsbar" class="pointsbar">
+      <div class="pointsbox"><span>0</span><div><span>+</span></div></div>
+      <div class="pointsbox"><span>0</span><div><span>+</span></div></div>
+      <div class="pointsbox"><span>0</span><div><span>+</span></div></div>
+      <div class="pointsbox"><span>0</span><div><span>+</span></div></div>
+      <div class="pointsbox"><span>0</span><div><span>-</span></div></div>
+      <div class="pointsbox"><span>0</span><div><span>=</span></div></div>
+    </div>
   </div>
 
 </div>
@@ -338,6 +397,9 @@ body {
 
   var scorecard = 0;
 
+  var undo = 1;
+  var consume = 0;
+
 
 
   window.onload = populate();
@@ -345,19 +407,30 @@ body {
   function populate() {
 
     let s = document.querySelectorAll('.scorebars');
-    for (let i = 0; i < s.length; i++) {
+    for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 12; j++) {
         s[i].appendChild(document.createElement('div'));
         s[i].children[j].className = 'tile' + (j == 10 ? ' tile_off' : '');
         s[i].children[j].setAttribute('onclick','toggle_tile(' + i + ', ' + j + ');');
         s[i].children[j].appendChild(document.createElement('span'));
         s[i].children[j].children[0].appendChild(document.createElement('span'));
-        s[i].children[j].children[0].children[0].innerText = j + 2;
+        s[i].children[j].children[0].children[0].innerText = (i < 2 ? j + 2 : 12 - j);
       }
       s[i].children[11].className += ' lock';
       s[i].children[11].children[0].children[0].innerText = 'X';
-      s[i].children[11].setAttribute('onclick','toggle_lock(' + i + ');');
+      s[i].children[11].setAttribute('onclick','toggle_lock(' + i + ', 0);');
     }
+
+    let p = document.getElementById('penaltybar');
+    for (let i = 0; i < 4; i++) {
+      p.appendChild(document.createElement('div'));
+      p.children[i].className = 'tile';
+      p.children[i].setAttribute('onclick','toggle_penalty(' + i + ');');
+      p.children[i].appendChild(document.createElement('span'));
+      p.children[i].children[0].appendChild(document.createElement('span'));
+      p.children[i].children[0].children[0].innerText = 'PASS';
+    }
+
   }
 
 
@@ -399,7 +472,7 @@ body {
 
     if (rotated) {
       pg.transform = landscape ? 'rotate(-90deg)' : 'rotate(0deg)';
-      let flip = document.querySelectorAll('.dice, .buttn, .tile');
+      let flip = document.querySelectorAll('.dice, .buttn, .tile, .pointsbox');
 
       for (let i = 0; i < flip.length; i++) {
         flip[i].style.transitionDuration = '0s'; // for jiggled dice
@@ -466,14 +539,18 @@ body {
 
   function toggle_tile(i, j) {
 
+    if (document.querySelectorAll('.penalty_sel').length > 3) return;
+
     let c = document.getElementById('card');
     let s = c.children[i].children[j].classList;
 
-    if (c.children[i].classList.contains('locked_bar')) return;
+    if (c.children[i].classList.contains('locked_bar') && (j < 10 || !s.contains('tile_sel'))) return;
     if (s.contains('tile_off') || s.contains('tile_old')) return;
+    if (s.contains('tile_sel') && undo < 1) return;
 
+    if (j > 9) toggle_lock(i, 1);
     if (s.contains('tile_sel')) {
-      s.remove('tile_sel');
+      s.remove('tile_sel'); undo -= consume;
       while (j > 0) {
         let prev = c.children[i].children[j - 1].classList;
         if (prev.contains('tile_sel')) { j = 0; prev.remove('tile_old'); }
@@ -484,7 +561,6 @@ body {
       }
     } else {
       s.add('tile_sel');
-      if (j > 9) toggle_lock(i);
       while (j > 0) {
         let prev = c.children[i].children[j - 1].classList;
         if (prev.contains('tile_sel')) { j = 0; prev.add('tile_old'); }
@@ -494,35 +570,86 @@ body {
         c.children[i].children[10].classList.remove('tile_off');
       }
     }
-
+  points();
   }
 
 
 
-  function toggle_lock(i) {
+  function toggle_lock(i, j) {
+
+    if (document.querySelectorAll('.penalty_sel').length > 3) return;
 
     let c = document.getElementById('card');
     let s = c.children[i].children[11].classList;
 
-    if (c.children[i].classList.contains('locked_bar') && !s.contains('tile_sel')) return;
+    if (c.children[i].classList.contains('locked_bar') && !s.contains('tile_old')) return;
+    if (s.contains('tile_old') && undo < 1) return;
+    if (s.contains('tile_sel') && j < 1) return;
 
-    if (s.contains('tile_sel')) {
-      s.remove('tile_sel');
+    if (s.contains('tile_old')) {
+      s.remove('tile_old'); s.remove('tile_sel');
+      for (let k = 0; k < 5; k++) {
+        if (!c.children[k].lastChild.classList.contains('tile_old')) {
+          c.children[k].classList.remove('locked_bar');
+        }
+      }
+    } else {
+      s.add('tile_old'); if (j > 0) s.add('tile_sel');
+      c.children[i].classList.add('locked_bar');
+      if (document.querySelectorAll('.locked_bar').length > 1) {  // game end condition------------
+        for (let k = 0; k < 5; k++) {
+          c.children[k].classList.add('locked_bar');
+        }
+      }
+    }
+  points();
+  }
+
+
+
+  function toggle_penalty(i) {
+
+    let p = document.getElementById('penaltybar');
+    let c = document.getElementById('card');
+
+    if (p.classList.contains('locked_bar')) return;
+    if (p.children[i].classList.contains('penalty_sel') && undo < 1) return;
+
+    let j = document.querySelectorAll('.penalty_sel').length;
+    if (p.children[i].classList.contains('penalty_sel')) {
+      p.children[j - 1].classList.remove('penalty_sel'); undo -= consume;
       for (let j = 0; j < 4; j++) {
-        if (!c.children[j].children[11].classList.contains('tile_sel')) {
+        if (!c.children[j].lastChild.classList.contains('tile_old')) {
           c.children[j].classList.remove('locked_bar');
         }
       }
-      if (c.children[i].children[10].classList.contains('tile_sel')) toggle_tile(i, 10);
     } else {
-      s.add('tile_sel');
-      c.children[i].classList.add('locked_bar');
-      if (document.querySelectorAll('.locked_bar').length == 2) {  // game over condition
+      p.children[j].classList.add('penalty_sel');
+      if (j > 2) {  // game end condition-------------------------------------------------------
         for (let j = 0; j < 4; j++) {
           c.children[j].classList.add('locked_bar');
         }
       }
     }
+  points();
+  }
+
+
+
+  function points () {
+
+    let c = document.getElementById('card');
+    let p = document.getElementById('pointsbar');
+
+    let i = 5 * c.children[4].querySelectorAll('.penalty_sel').length;
+    p.children[4].children[0].textContent = i; i *= -1;
+    for (let j = 0; j < 4; j++) {
+      let k = c.children[j].querySelectorAll('.tile_sel').length;
+      let r = 0; while (k > 0) r += k--;
+      p.children[j].children[0].textContent = r; i += r;
+    }
+    p.children[5].children[0].textContent = i;
+
   }
 
 
