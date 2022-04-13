@@ -65,17 +65,21 @@ body {
   background-color: rgba(255,255,255,0.7);
 }
 
-.scorebars {              right: 1.4em; color: var(--red);
+.scorebars {              right: 2em; color: var(--red);
   position: absolute;
-  width: 1.4em; height: 15.9em; padding: .1em 0 0 0;
+  width: 1.4em; height: 15.8em; padding: .2em 0 0 0;
   background-color: currentColor;
 }
 
-.scorebars:nth-child(2) { right: 2.8em; color: var(--yel); }
-.scorebars:nth-child(3) { right: 4.2em; color: var(--grn); }
-.scorebars:nth-child(4) { right: 5.6em; color: var(--blu); }
+.scorebars:nth-child(2) { right: 3.4em; color: var(--yel); }
+.scorebars:nth-child(3) { right: 4.8em; color: var(--grn); }
+.scorebars:nth-child(4) { right: 6.2em; color: var(--blu); }
 
-.score {
+.locked_bar > .tile { background-color: rgba(255,255,255,0.15); }
+.locked_bar > .tile_sel { background-color: white; opacity: .7; }
+.locked_bar > .lock { opacity: 1; }
+
+.tile {
   position: relative;
   width: 1.2em; height: 1.2em; margin: .1em;
   display: flex;
@@ -85,21 +89,34 @@ body {
   background-color: rgba(255,255,255,0.5);
 }
 
-.score > span {
+.tile > span {
   width: 88%; height: 88%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: .18em;
+  border-radius: 14%;
   font-family: 'Roboto-Black', sans-serif;
   font-size: 80%;
 }
 
-.score_sel { background-color: white; }
-.score_sel > span { background-color: currentColor; }
-.score_sel > span > span { color: white; }
+.tile_sel { background-color: white; }
+.tile_sel > span { background-color: currentColor; }
+.tile_sel > span > span { color: white; }
 
-.score_off { background-color: rgba(255,255,255,0.15); }
+.tile_off { background-color: rgba(255,255,255,0.15); }
+
+.lock, .lock > span { border-radius: 50%; }
+
+.penaltybar {
+  right: 7.6em; top: 9.3em; color: #bbb;
+  position: absolute;
+  width: 1.4em;
+}
+
+.penaltybar > div:nth-child(1) { color: var(--drk); }
+
+.penaltybar > div { background-color: currentColor; }
+.penaltybar > div > span { background-color: #eee; font-size: 38%; }
 
 /* ------------------------------------------------------------ */
 
@@ -296,6 +313,12 @@ body {
     <div class="scorebars"></div>
     <div class="scorebars"></div>
     <div class="scorebars"></div>
+    <div class="penaltybar">
+      <div class="tile"><span><span>PASS</span></span></div>
+      <div class="tile"><span><span>PASS</span></span></div>
+      <div class="tile"><span><span>PASS</span></span></div>
+      <div class="tile"><span><span>PASS</span></span></div>
+   </div>
   </div>
 
 </div>
@@ -323,14 +346,17 @@ body {
 
     let s = document.querySelectorAll('.scorebars');
     for (let i = 0; i < s.length; i++) {
-      for (let j = 0; j < 11; j++) {
+      for (let j = 0; j < 12; j++) {
         s[i].appendChild(document.createElement('div'));
-        s[i].children[j].className = 'score' + (j == 10 ? ' score_off' : '');
-        s[i].children[j].setAttribute('onclick','toggle_score(' + i + ', ' + j + ');');
+        s[i].children[j].className = 'tile' + (j == 10 ? ' tile_off' : '');
+        s[i].children[j].setAttribute('onclick','toggle_tile(' + i + ', ' + j + ');');
         s[i].children[j].appendChild(document.createElement('span'));
         s[i].children[j].children[0].appendChild(document.createElement('span'));
         s[i].children[j].children[0].children[0].innerText = j + 2;
       }
+      s[i].children[11].className += ' lock';
+      s[i].children[11].children[0].children[0].innerText = 'X';
+      s[i].children[11].setAttribute('onclick','toggle_lock(' + i + ');');
     }
   }
 
@@ -373,7 +399,7 @@ body {
 
     if (rotated) {
       pg.transform = landscape ? 'rotate(-90deg)' : 'rotate(0deg)';
-      let flip = document.querySelectorAll('.dice, .buttn, .score');
+      let flip = document.querySelectorAll('.dice, .buttn, .tile');
 
       for (let i = 0; i < flip.length; i++) {
         flip[i].style.transitionDuration = '0s'; // for jiggled dice
@@ -438,36 +464,65 @@ body {
 
 
 
-  function toggle_score(i, j) {
+  function toggle_tile(i, j) {
 
-    let s = document.getElementById('card').children[i].children[j];
+    let c = document.getElementById('card');
+    let s = c.children[i].children[j].classList;
 
-    if (s.classList.contains('score_off') || s.classList.contains('score_old')) return;
+    if (c.children[i].classList.contains('locked_bar')) return;
+    if (s.contains('tile_off') || s.contains('tile_old')) return;
 
-    if (s.classList.contains('score_sel')) {
-      s.classList.remove('score_sel');
+    if (s.contains('tile_sel')) {
+      s.remove('tile_sel');
       while (j > 0) {
-        let prev = document.getElementById('card').children[i].children[j - 1];
-        if (prev.classList.contains('score_sel')) {
-          j = 0; prev.classList.remove('score_old');
-        } else { j--; prev.classList.remove('score_off'); }
+        let prev = c.children[i].children[j - 1].classList;
+        if (prev.contains('tile_sel')) { j = 0; prev.remove('tile_old'); }
+        else { j--; prev.remove('tile_off'); }
       }
-      if (document.getElementById('card').children[i].querySelectorAll('.score_sel').length == 4) {
-        document.getElementById('card').children[i].children[10].classList.add('score_off');
+      if (c.children[i].querySelectorAll('.tile_sel').length < 5) {
+        c.children[i].children[10].classList.add('tile_off');
       }
     } else {
-      s.classList.add('score_sel');
+      s.add('tile_sel');
+      if (j > 9) toggle_lock(i);
       while (j > 0) {
-        let prev = document.getElementById('card').children[i].children[j - 1];
-        if (prev.classList.contains('score_sel')) {
-          j = 0; prev.classList.add('score_old');
-        } else { j--; prev.classList.add('score_off'); }
+        let prev = c.children[i].children[j - 1].classList;
+        if (prev.contains('tile_sel')) { j = 0; prev.add('tile_old'); }
+        else { j--; prev.add('tile_off'); }
       }
-      if (document.getElementById('card').children[i].querySelectorAll('.score_sel').length == 5) {
-        document.getElementById('card').children[i].children[10].classList.remove('score_off');
+      if (c.children[i].querySelectorAll('.tile_sel').length > 4) {
+        c.children[i].children[10].classList.remove('tile_off');
       }
     }
 
+  }
+
+
+
+  function toggle_lock(i) {
+
+    let c = document.getElementById('card');
+    let s = c.children[i].children[11].classList;
+
+    if (c.children[i].classList.contains('locked_bar') && !s.contains('tile_sel')) return;
+
+    if (s.contains('tile_sel')) {
+      s.remove('tile_sel');
+      for (let j = 0; j < 4; j++) {
+        if (!c.children[j].children[11].classList.contains('tile_sel')) {
+          c.children[j].classList.remove('locked_bar');
+        }
+      }
+      if (c.children[i].children[10].classList.contains('tile_sel')) toggle_tile(i, 10);
+    } else {
+      s.add('tile_sel');
+      c.children[i].classList.add('locked_bar');
+      if (document.querySelectorAll('.locked_bar').length == 2) {  // game over condition
+        for (let j = 0; j < 4; j++) {
+          c.children[j].classList.add('locked_bar');
+        }
+      }
+    }
   }
 
 
