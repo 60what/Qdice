@@ -37,6 +37,7 @@ html, body { width: 100%; height: 100%; }
 
 body {
   overscroll-behavior-y: contain;
+  overflow: hidden;
   margin: 0;
   background-image: repeating-linear-gradient(-45deg, var(--oat) 0 8%, var(--tan) 0 50%);
   background-size: 12px 12px;
@@ -48,11 +49,59 @@ body {
 
 .page1 {
   position: absolute;
-//  background-color: rgba(8, 8, 8, 0.3);
+//  background-color: rgba(8,8,8,0.3);
   width: 9em;
   height: 16em;
   transform-origin: 4.5em 8em;
 }
+
+/* ------------------------------------------------------------ */
+
+.card {
+  position: absolute;
+  width: 9em; height: 16em;
+  margin-right: 4.5em; right: 50vmin;
+  transition-property: margin, right;
+  background-color: rgba(255,255,255,0.7);
+}
+
+.scorebars {              right: 1.4em; color: var(--red);
+  position: absolute;
+  width: 1.4em; height: 15.9em; padding: .1em 0 0 0;
+  background-color: currentColor;
+}
+
+.scorebars:nth-child(2) { right: 2.8em; color: var(--yel); }
+.scorebars:nth-child(3) { right: 4.2em; color: var(--grn); }
+.scorebars:nth-child(4) { right: 5.6em; color: var(--blu); }
+
+.score {
+  position: relative;
+  width: 1.2em; height: 1.2em; margin: .1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: .2em;
+  background-color: rgba(255,255,255,0.5);
+}
+
+.score > span {
+  width: 88%; height: 88%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: .18em;
+  font-family: 'Roboto-Black', sans-serif;
+  font-size: 80%;
+}
+
+.score_sel { background-color: white; }
+.score_sel > span { background-color: currentColor; }
+.score_sel > span > span { color: white; }
+
+.score_off { background-color: rgba(255,255,255,0.15); }
+
+/* ------------------------------------------------------------ */
 
 .dice_mat {
   position: absolute;
@@ -93,7 +142,7 @@ body {
 .dice:nth-child(n + 7) {
   opacity: 0.3;
   display: none;
-  visibility: inherit;
+  visibility: inherit;  /* visibility copies the dice mat */
 }
 
 	/* pips start hidden and are set to black by defualt */
@@ -118,7 +167,7 @@ body {
 .dice div:nth-child(7) { top: 64%; left: 64%; }
 
 
-	/* numerals start hidden and are set to black by defualt */
+	/* numerals start hidden and are set to black by default */
 .numeral {
   color: black;
   font-size: 150%;
@@ -128,7 +177,8 @@ body {
   height: 68%;
   z-index: 1;
   opacity: 0;
-  display:flex;
+  margin: auto;
+  display: flex;
   align-items: center;
   justify-content: center;
   transition: opacity .5s;
@@ -171,7 +221,7 @@ body {
 
 
 </head>
-<body oncontextmenu="return false;" onselectstart="return false;">
+<body oncontextmenu="return false;" onselectstart="return false;"">
 
 <!---
 <span onclick="document.getElementById('page1').style.visibility = 'hidden';">hide all but dice</span>
@@ -183,6 +233,7 @@ body {
 
 <div id="page1" class="page1">
 
+  <div id="mat" style="transition: opacity .5s;">
   <div id="dice_mat" class="dice_mat">
 
     <div class="dice">
@@ -235,8 +286,17 @@ body {
       ROLL
     </div>
   </div>
+  </div>
 
-  <div onclick="toggle_faces();" style="position: absolute; bottom: 0;">#</div>
+  <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0; z-index: 1; visibility: visible;">+</div>
+  <div onclick="toggle_faces();" style="position: absolute; bottom: 0; right: 0; z-index: 1; visibility: visible;">#</div>
+
+  <div id="card" class="card">
+    <div class="scorebars"></div>
+    <div class="scorebars"></div>
+    <div class="scorebars"></div>
+    <div class="scorebars"></div>
+  </div>
 
 </div>
 
@@ -253,6 +313,27 @@ body {
   var use_numerals = 0;  /* pips are displayed by defualt */
   var shake_count = 0;
 
+  var scorecard = 0;
+
+
+
+  window.onload = populate();
+
+  function populate() {
+
+    let s = document.querySelectorAll('.scorebars');
+    for (let i = 0; i < s.length; i++) {
+      for (let j = 0; j < 11; j++) {
+        s[i].appendChild(document.createElement('div'));
+        s[i].children[j].className = 'score' + (j == 10 ? ' score_off' : '');
+        s[i].children[j].setAttribute('onclick','toggle_score(' + i + ', ' + j + ');');
+        s[i].children[j].appendChild(document.createElement('span'));
+        s[i].children[j].children[0].appendChild(document.createElement('span'));
+        s[i].children[j].children[0].children[0].innerText = j + 2;
+      }
+    }
+  }
+
 
 
   new ResizeObserver(() => {
@@ -266,13 +347,7 @@ body {
   function draw_page1() {
 
     let rotated = 0;
-
-	/* get objects for the dice and buttons */
-
     let pg = document.getElementById('page1').style;
-    let mat = document.getElementById('dice_mat');
-    let shake = document.getElementById('shake').style;
-    let roll = document.getElementById('roll').style;
 
 	/* determine orientation and scale from screen dimensions */
 
@@ -298,13 +373,17 @@ body {
 
     if (rotated) {
       pg.transform = landscape ? 'rotate(-90deg)' : 'rotate(0deg)';
-      shake.transform = roll.transform = landscape ? 'rotate(90deg)' : 'rotate(0deg)';
+      let flip = document.querySelectorAll('.dice, .buttn, .score');
 
-      for (let i = 0; i < 6; i++) {
-        mat.children[i].style.transitionDuration = '0s';
-        mat.children[i].style.transform = landscape ? 'rotate(90deg)' : 'rotate(0deg)';
+      for (let i = 0; i < flip.length; i++) {
+        flip[i].style.transitionDuration = '0s'; // for jiggled dice
+        flip[i].style.transform = landscape ? 'rotate(90deg)' : 'rotate(0deg)';
       }
     }
+
+	/* these prevent ghosting on the left edge */
+    document.getElementById('card').style.transitionDuration = '0s';
+    if (!scorecard) document.getElementById('card').style.visibility = 'hidden';
 
   }
 
@@ -330,10 +409,65 @@ body {
   function toggle_faces() {
 
     use_numerals = !use_numerals;
+    let d = document.querySelectorAll('.dice');
     for (let i = 0; i < 6; i++) {
-      let d = document.getElementById('dice_mat').children[i].children[7];
-      d.style.opacity = 0 + use_numerals;
+      d[i].children[7].style.opacity = 0 + use_numerals;
     }
+
+  }
+
+
+
+  function toggle_scorecard() {
+
+    let d = document.getElementById('card').style;
+    d.transitionDuration = '.5s';
+
+    if (scorecard) {
+      d.marginRight = '4.5em'; d.right = '50vmin';
+
+      document.getElementById('mat').style.opacity = '1';
+    } else {
+      d.visibility = 'visible'; d.margin = d.right = 0;
+
+      document.getElementById('mat').style.opacity = '0';
+    }
+    scorecard = !scorecard;
+
+  }
+
+
+
+  function toggle_score(i, j) {
+
+    let s = document.getElementById('card').children[i].children[j];
+
+    if (s.classList.contains('score_off') || s.classList.contains('score_old')) return;
+
+    if (s.classList.contains('score_sel')) {
+      s.classList.remove('score_sel');
+      while (j > 0) {
+        let prev = document.getElementById('card').children[i].children[j - 1];
+        if (prev.classList.contains('score_sel')) {
+          j = 0; prev.classList.remove('score_old');
+        } else { j--; prev.classList.remove('score_off'); }
+      }
+      if (document.getElementById('card').children[i].querySelectorAll('.score_sel').length == 4) {
+        document.getElementById('card').children[i].children[10].classList.add('score_off');
+      }
+    } else {
+      s.classList.add('score_sel');
+      while (j > 0) {
+        let prev = document.getElementById('card').children[i].children[j - 1];
+        if (prev.classList.contains('score_sel')) {
+          j = 0; prev.classList.add('score_old');
+        } else { j--; prev.classList.add('score_off'); }
+      }
+      if (document.getElementById('card').children[i].querySelectorAll('.score_sel').length == 5) {
+        document.getElementById('card').children[i].children[10].classList.remove('score_off');
+      }
+    }
+
   }
 
 
@@ -418,8 +552,7 @@ body {
 
 	/* parse the rolls, display each and remove jiggle */
 
-    let rolled = '00000' + Math.floor(seed * (6 ** 6)).toString(6);
-    rolled = rolled.substr(rolled.length - 6);
+    let rolled = Math.floor(seed * (6 ** 6)).toString(6).padStart(6, '0');
     
     for (let i = 0; i < 6; i++) {
       reveal_face(i, parseInt(rolled.charAt(5 - i)));
@@ -438,6 +571,7 @@ body {
 /* -------------------------------------
    not my code: MurmurHash3 + sfc32 PRNG
    ------------------------------------- */
+
 
 
 function xmur3(str) {
