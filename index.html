@@ -152,7 +152,9 @@ body {
   background: none;
 }
 
-/* ------------------------------------------------------------ */
+
+
+	/* ------------------------------------------------------------- */
 
 .dice_mat {
   position: absolute;
@@ -166,28 +168,27 @@ body {
 
 	/* dice are set to white by defualt */
 .dice {
-  background-image: radial-gradient(white 70%, black 115%);
-  border-radius: .12em;
+  background-image: radial-gradient(white 70%, black 130%);
+  border-radius: .2em;
   position: absolute;
   display:flex;
   align-items: center;
   justify-content: center;
   visibility: visible;
-  margin: 1em 0 0 1em;
-  transition: margin 0s ease-out;
+  top: 2em; left: 2em;
   width: 2em;
   height: 2em;
-  top: 0;
-  left: 0;
+  z-index: 1;
+
 }
 
-.dice:nth-child(2n + 2) { left: 3em; }
+.dice:nth-child(2n + 2) { left: 5em; }
 
 	/* the first 2 dice remain white, the rest are colored */
-.dice:nth-child(4n + 3) { top: 3em; background-image: radial-gradient(var(--red) 70%, black 115%); }
-.dice:nth-child(4n + 4) { top: 3em; background-image: radial-gradient(var(--yel) 70%, black 115%); }
-.dice:nth-child(4n + 5) { top: 6em; background-image: radial-gradient(var(--grn) 70%, black 115%); }
-.dice:nth-child(4n + 6) { top: 6em; background-image: radial-gradient(var(--blu) 70%, black 115%); }
+.dice:nth-child(4n + 3) { top: 5em; background-image: radial-gradient(var(--red) 70%, black 130%); }
+.dice:nth-child(4n + 4) { top: 5em; background-image: radial-gradient(var(--yel) 70%, black 130%); }
+.dice:nth-child(4n + 5) { top: 8em; background-image: radial-gradient(var(--grn) 70%, black 130%); }
+.dice:nth-child(4n + 6) { top: 8em; background-image: radial-gradient(var(--blu) 70%, black 130%); }
 
 	/* the 4 ghost dice are transparent and start hidden */
 .dice:nth-child(n + 7) {
@@ -195,6 +196,20 @@ body {
   display: none;
   visibility: inherit;  /* visibility copies the dice mat */
 }
+
+// .dice { transition: all 0.5s ease-out; }
+
+.dice.oncard {
+  font-size: .65em; left: 11.3em; box-shadow: 0 0 .3em .1em rgba(0,0,0,.2); }
+
+.dice.oncard:nth-child(1)      { top: 5.5em; }
+.dice.oncard:nth-child(2)      { top: 8em; }
+.dice.oncard:nth-child(4n + 3) { top: 10.5em; }
+.dice.oncard:nth-child(4n + 4) { top: 13em; }
+.dice.oncard:nth-child(4n + 5) { top: 15.5em; }
+.dice.oncard:nth-child(4n + 6) { top: 18em; }
+
+
 
 	/* pips start hidden and are set to black by defualt */
 .dice > div { 
@@ -274,18 +289,28 @@ body {
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;"">
 
-<!---
-<span onclick="document.getElementById('page1').style.visibility = 'hidden';">hide all but dice</span>
-<span onclick="document.getElementById('page1').style.visibility = 'visible';">- come back</span>
-<br>
-<span onclick="document.getElementById('page1').style.display = 'none';">hide all</span>
-<span onclick="document.getElementById('page1').style.display = 'inline';">- come back</span>
---->
-
 <div id="page1" class="page1">
 
   <div id="mat" style="transition: opacity .5s;">
-  <div id="dice_mat" class="dice_mat">
+    <div id="dice_mat" class="dice_mat"></div>
+
+    <div id="shake" class="buttn shake" onclick="shaker();">
+      S
+      <div>
+        SHAKE
+      </div>
+    </div>
+
+    <div id="roll" class="buttn" style="opacity: 0.3;" onclick="roller();">
+      R
+      <div>
+        ROLL
+      </div>
+    </div>
+
+  </div>
+
+<div id="dice_tray" class="dicetray" style="position: absolute;">
 
     <div class="dice">
       <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
@@ -322,22 +347,9 @@ body {
     <div class="dice" onclick="in_out(8, 0);"></div>
     <div class="dice" onclick="in_out(9, 0);"></div>
 
-  </div>
+</div>
 
-  <div id="shake" class="buttn shake" onclick="shaker();">
-    S
-    <div>
-      SHAKE
-    </div>
-  </div>
 
-  <div id="roll" class="buttn" style="opacity: 0.3;" onclick="roller();">
-    R
-    <div>
-      ROLL
-    </div>
-  </div>
-  </div>
 
   <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0; z-index: 1; visibility: visible;">+</div>
   <div onclick="toggle_faces();" style="position: absolute; bottom: 0; right: 0; z-index: 1; visibility: visible;">#</div>
@@ -356,8 +368,6 @@ body {
 
 
 <script type="text/javascript">
-
-
 
   var landscape;
 
@@ -411,6 +421,10 @@ body {
       t.children[i].appendChild(document.createElement('span'));
       t.children[i].children[0].innerText = (i < 4 ? '+ 0' : i < 5 ? '- 0' : 'TOTAL SCORE:');
     }
+
+let dice_style = document.createElement('style');
+document.head.appendChild(dice_style);
+dice_style.setAttribute('id', 'dice_style');
 
   }
 
@@ -478,7 +492,7 @@ body {
 
     let j = (i < 6 ? 1 : -1);
 
-    let mat = document.getElementById('dice_mat');
+    let mat = document.getElementById('dice_tray');
     mat.children[i].style.display = 'none';
     mat.children[i + 4 * j].style.display = 'flex';
 
@@ -502,15 +516,26 @@ body {
 
   function toggle_scorecard() {
 
-    let d = document.getElementById('card').style;
-    d.transitionDuration = '.5s';
+    let c = document.getElementById('card').style;
+    c.transitionDuration = '.5s';
 
     if (scorecard) {
-      d.marginRight = '4.5em'; d.right = '50vmin';
+      c.marginRight = '4.5em'; c.right = '50vmin';
+
+      let d = document.querySelectorAll('.dice');
+      for (let i = 0; i < 10; i++) {
+        d[i].classList.remove('oncard');
+      }
 
       document.getElementById('mat').style.opacity = '1';
     } else {
-      d.visibility = 'visible'; d.margin = d.right = 0;
+      c.visibility = 'visible'; c.margin = c.right = 0;
+
+      let d = document.querySelectorAll('.dice');
+      for (let i = 0; i < 10; i++) {
+        d[i].style.transitionDuration = '.5s';
+        d[i].classList.add('oncard');
+      }
 
       document.getElementById('mat').style.opacity = '0';
     }
@@ -666,7 +691,7 @@ body {
     if (seed < 0) {
       for (let i = 0; i < 6; i++) {
 
-        let d = document.getElementById('dice_mat').children[i];
+        let d = document.getElementById('dice_tray').children[i];
         d.children[7].textContent = '';
 
         for (let j = 0; j < 7; j++) {
@@ -686,20 +711,28 @@ body {
 
 	/* shaking the dice jiggles them */
 
-    jiggle(.2);
+    jiggle(.2, 1);
 
   }
 
 
 
-  function jiggle(anim) {
+  function jiggle(anim, scale) {
 
-    for (let i = 0; i < 6 ; i++) {
-      let d = document.getElementById('dice_mat').children[i].style;
+let r = document.getElementById('dice_style');
+r.disabled = false;
 
+    for (let i = 1; i < 7 ; i++) {
+      let d = document.getElementById('dice_tray').children[i - 1].style;
       d.transitionDuration = anim + 's';
-      d.marginTop = .55 + .9 * Math.random() + 'em';
-      d.marginLeft = .55 + .9 * Math.random() + 'em';
+
+      let j = .9 * (Math.random() - .5);
+      let k = .9 * (Math.random() - .5);
+
+r.sheet.insertRule('.dice:nth-child(' + i + ') { margin: ' + j + 'em 0 0 ' + k + 'em; }');
+r.sheet.insertRule('.dice.oncard:nth-child(' + i + ') { margin: ' + (j / 2) + 'em 0 0 ' + (k / 2) + 'em; }');
+if (r.sheet.rules.length > 12) { r.sheet.deleteRule(13); r.sheet.deleteRule(12); }
+
     }
 
   }
@@ -708,7 +741,7 @@ body {
 
   function reveal_face(i, j) {
 
-    let d = document.getElementById('dice_mat').children[i];
+    let d = document.getElementById('dice_tray').children[i];
     d.children[7].textContent = (j + 1);
 
     if (j % 2 == 0) {
@@ -743,7 +776,8 @@ body {
     
     for (let i = 0; i < 6; i++) {
       reveal_face(i, parseInt(rolled.charAt(5 - i)));
-      document.getElementById('dice_mat').children[i].style.margin = '1em 0 0 1em';
+
+document.getElementById('dice_style').disabled = true;
     }
 
 	/* disable the roll button until dice are shaken again */
