@@ -162,9 +162,6 @@ body {
 
 #dicepad {
   transition: opacity .5s;
-}
-
-#mat {
   position: absolute;
   width: 7em;
   height: 10em;
@@ -184,7 +181,7 @@ body {
   height: 1.84em;
   border: .08em solid var(--drk);
   margin: 9.333em 0 0 .333em;
-  left: 1em;
+  left: 1em; top: 0;
 
   background-image: linear-gradient(var(--oat) 0, var(--brn) 100%);
   border-radius: .3em;
@@ -196,6 +193,9 @@ body {
 
 #roll { left: 3.533em; opacity: 0.3; }
 #shake:active { opacity: 0.3; }
+
+.bigbutton.oncard { font-size: .6em; margin: 0; left: 12.5em !important; top: 24.5em; z-index: 1; }
+#roll.oncard { top: 22.2em; }
 
 #dice_set { color: white; }
 
@@ -293,18 +293,17 @@ body {
 <body oncontextmenu="return false;" onselectstart="return false;"">
 <div id="rex">
 
-  <div id="dicepad">
-    <div id="mat"></div>
-    <div id="shake" class="bigbutton" onclick="shaker();">
-      S<div>SHAKE</div>
-    </div>
-    <div id="roll" class="bigbutton" onclick="roller();">
-      R<div>ROLL</div>
-    </div>
+  <div id="dicepad"></div>
+    
+  <div id="shake" class="bigbutton" onclick="shaker();">
+    S<div>SHAKE</div>
+  </div>
+  <div id="roll" class="bigbutton" onclick="roller();">
+    R<div>ROLL</div>
   </div>
 
   <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0; z-index: 1; visibility: visible;">+</div>
-  <div onclick="toggle_faces();" style="position: absolute; bottom: 0; right: 0; z-index: 1; visibility: visible;">#</div>
+  <div onclick="toggle_faces();" style="position: absolute; top: 0; right: 0; z-index: 1; visibility: visible;">#</div>
 
   <div id="card" class="card">
     <div class="score bar"></div>
@@ -491,7 +490,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
     remove_animations();
 
     let c = $id('card');
-    let d = $all('.cube');
+    let d = $all('.cube, .bigbutton');
 
     c.classList.add('shift5s');
     d.forEach(e => { e.classList.add('shift5s'); });
