@@ -29,7 +29,7 @@
   --brn: #876;
 
   --prl: #eee;
-  --gry: #999;
+  --gry: #aaa;
   --drk: #222;
 
   --mst: rgba(255, 255, 255, .15);
@@ -42,246 +42,238 @@
 html, body { width: 100%; height: 100%; }
 
 body {
-  overscroll-behavior-y: contain;
-  overflow: hidden;
   margin: 0;
-  background-image: repeating-linear-gradient(-45deg, var(--oat) 0 8%, var(--tan) 0 50%);
-  background-size: 12px 12px;
   display: flex;
+  overflow: hidden;
+  color: var(--drk);
   align-items: center;
   justify-content: center;
+  background-size: 12px 12px;
+  overscroll-behavior-y: contain;
   font-family: 'Roboto-Black', sans-serif;
-  color: var(--drk);
-}
+  background-image: repeating-linear-gradient(-45deg, var(--oat) 0 8%, var(--tan) 0 50%); }
 
-#rex {
+.rex {
+  width: 9em;
+  height: 16em;
+  position: absolute; }
+
+.dicepad {
+  width: 7em;
+  height: 10em;
   position: absolute;
-  width: 9rem;
-  height: 16rem;
-  transform-origin: 4.5rem 8rem;
-}
-
-
-	/* ------------------------------------------------------------- */
-	/* scorecard starts left of the screen with a sliding transition */
+  margin: 1em 0 0 1em;
+  border-radius: .33em;
+  transition: opacity .5s;
+  background-color: var(--drk);
+  box-shadow: 0 0 .4em -.02em black; }
 
 .card {
+  opacity: 0;
   color: var(--fog);
   position: absolute;
   width: 9em; height: 16em;
-  right: 50vmin; margin-right: 4.5em;  /* left edge of the screen */
-  opacity: 0;
   background-color: currentColor;
-}
+  right: 50vmin; margin-right: 4.5em; }
 
-.card_out { right: 0; margin-right: 0; opacity: 1; }
+.card.card_out { right: 0; margin-right: 0; opacity: 1; }
 
-.bar { width: 1.4em; position: absolute; background-color: currentColor; }
+.bar { position: absolute; width: 1.4em; }
 
 .tile {
+  margin: .1em;
+  width: 1.2em;
+  height: 1.2em;
+  display: flex;
   position: relative;
-  width: 1.2em; height: 1.2em; margin: .1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: .2em;
-}
-
-.tile > span {
-  font-size: 80%;
-  width: 88%; height: 88%;
-  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; }
+
+.tile span {
+  width: 88%;
+  height: 88%;
+  display: flex;
+  font-size: 80%;
   border-radius: 14%;
-}
+  align-items: center;
+  justify-content: center; }
 
 
 
-.score.bar { height: 15.8em; padding: .2em 0 0 0;
-                          right: 2.0em; color: var(--red); }
-.score.bar:nth-child(2) { right: 3.4em; color: var(--yel); }
-.score.bar:nth-child(3) { right: 4.8em; color: var(--grn); }
-.score.bar:nth-child(4) { right: 6.2em; color: var(--blu); }
+.score.bar {
+  height: 15.8em;
+  padding: .2em 0 0 0;
+  background-color: currentColor;
+                      right: 2.0em; color: var(--red); }
+.score:nth-child(2) { right: 3.4em; color: var(--yel); }
+.score:nth-child(3) { right: 4.8em; color: var(--grn); }
+.score:nth-child(4) { right: 6.2em; color: var(--blu); }
 
-.score > .tile     { background-color: var(--fog); }
-.score > .tile_off { background-color: var(--mst); }
+.score .tile     { background-color: var(--fog); }
+.score .tile_off { background-color: var(--mst); }
 
-.score > .tile_sel { background-color: white !important; }
-.score > .tile_sel > span { background-color: currentColor; }
-.score > .tile_sel > span > span { color: white !important; }
+.score .tile_sel { background-color: white !important; }
+.score .tile_sel span { background-color: currentColor; }
+.score .tile_sel span p { color: white !important; }
 
-.lock, .lock > span { border-radius: 50%; }
-.lock > span > span { opacity: 0; }
+.lock, .lock span { border-radius: 50%; }
+.lock span p { opacity: 0; }
 
 .score.locked_bar > .tile          { background-color: var(--mst); }
 .score.locked_bar > .lock.tile_off { background-color: var(--fog); }
 .score.locked_bar > .tile_sel           { opacity: .7; }
 .score.locked_bar > .tile:nth-child(11) { opacity: 1; }
-.score.locked_bar > .lock > span > span { opacity: 1; }
+.score.locked_bar > .lock > span > p { opacity: 1; }
 
+.penalty.bar { top: 8em; right: 7.6em; }
+.penalty .tile { color: var(--gry); background-color: currentColor; }
+.penalty .tile_sel { color: var(--drk); }
+.penalty .tile span { background-color: var(--prl); font-size: 38%; }
+.penalty .tile span::before { content: 'PASS'; }
 
+.points { right: 7.6em; }
 
-#penalty { top: 9.3em; right: 7.6em; color: transparent; }
-#penalty > .tile { color: var(--gry); background-color: currentColor; }
-#penalty > .tile > span { background-color: var(--prl); font-size: 38%; }
-#penalty > .tile_sel { color: var(--drk); }
+.points .tile { margin: .06em .1em .06em .1em; xbackground: red;
+                             color: var(--drk); }
+.points .tile:nth-child(1) { color: var(--red); }
+.points .tile:nth-child(2) { color: var(--yel); }
+.points .tile:nth-child(3) { color: var(--grn); }
+.points .tile:nth-child(4) { color: var(--blu); }
+.points .tile:nth-child(5) { color: var(--gry); }
 
+.points .tile:nth-child(6) { top: .1em; opacity: 0;
+  transition: opacity .5s;
+  align-items: flex-end; }
 
-
-#points { right: 7.6em; color: transparent; }
-
-#points > .tile { margin: .06em .1em .06em .1em;
-                               color: var(--drk); }
-#points > .tile:nth-child(1) { color: var(--red); }
-#points > .tile:nth-child(2) { color: var(--yel); }
-#points > .tile:nth-child(3) { color: var(--grn); }
-#points > .tile:nth-child(4) { color: var(--blu); }
-#points > .tile:nth-child(5) { color: var(--gry); }
-
-#points > .tile > span {
+.points .tile span {
   font-size: .5em;
-  width: 2.2em; height: 1.6em;
+  width: 2.2em;
+  height: 1.6em;
   border: .1em solid currentColor;
   border-radius: .4em;
-  background-color: var(--prl);
-}
+  background-color: var(--prl); }
 
-#points > .tile:nth-child(6) > span {
-  font-size: .3em;
-  text-align: center;
-  border: 0;
-  background: none;
-}
+.points .tile:nth-child(6) span { height: 1.3em; margin-bottom: .15em; }
 
-#points > .tile:nth-child(n + 6) { opacity: 0; transition: opacity .5s; }
+.points .tile:nth-child(6) div {
+  width: 100%;
+  height: 100%;
+  font-size: 35%;
+  position:absolute;
+  text-align: center; }
+
+.points .tile:nth-child(6) div::before { content: 'TOTAL'; }
 
 
-
-	/* ------------------------------------------------------------- */
-
-#dicepad {
-  transition: opacity .5s;
-  position: absolute;
-  width: 7em;
-  height: 10em;
-  margin: 1em 0 0 1em;
-
-  background-color: var(--drk);
-  border-radius: .33em;
-  box-shadow: 0 0 .4em -.02em black;
-}
 
 .bigbutton {
-  font-family: 'Verdana-Bold', sans-serif;
-  font-size: 1.25em;
-
-  position: absolute;
-  width: 1.84em;
-  height: 1.84em;
-  border: .08em solid var(--drk);
-  margin: 9.333em 0 0 .333em;
-  left: 1em; top: 0;
-
-  background-image: linear-gradient(var(--oat) 0, var(--brn) 100%);
-  border-radius: .3em;
-  text-shadow: 0 .03em .05em var(--tan);
+  width: 2.3em;
+  height: 2.3em;
+  left: 1.667em;
+  top: 11.667em;
   text-align: center;
-}
-
-.bigbutton > div { font-size: 40%; }
-
-#roll { left: 3.533em; opacity: 0.3; }
-#shake:active { opacity: 0.3; }
-
-.bigbutton.oncard { font-size: .6em; margin: 0; left: 12.5em !important; top: 24.5em; z-index: 1; }
-#roll.oncard { top: 22.2em; }
-
-#dice_set { color: white; }
-
-.cube {
   position: absolute;
-  top: 2em;
-  left: 2em;
-}
+  border-radius: .4em;
+  border: .1em solid var(--drk);
+  font-family: 'Verdana-Bold', sans-serif;
+  text-shadow: 0 .04rem .06rem var(--tan);
+  background-image: linear-gradient(var(--oat) 0, var(--brn) 100%); }
 
-.cube:nth-child(2n + 2) { left: 5em; }
-.cube:nth-child(3) { top: 5em; color: var(--red); }
-.cube:nth-child(4) { top: 5em; color: var(--yel); }
-.cube:nth-child(5) { top: 8em; color: var(--grn); }
-.cube:nth-child(6) { top: 8em; color: var(--blu); }
+.bigbutton.card_out { font-size: .55em; top: 11.3rem; left: 7.3rem; }
+
+.shake:active { opacity: .3; }
+.roll { left: 4.833em; opacity: .3; }
+
+.roll.card_out { top: 9.7rem; }
+
+.bigbutton .text1 { font-size: 135%;
+  position: absolute;
+  width: 100%; }
+
+.bigbutton.card_out .text1 { font-size: 173%; }
+
+.bigbutton .text2 { font-size: .5em;
+  position: absolute;
+  width: 100%;
+  top: 3em;
+  transition: opacity .5s ; }
+
+.bigbutton.card_out .text2 { opacity: 0; }
+
+
+
+/* choppy sliding might be caused if:
+   start and stop values are not declared?
+   length unit types differ?                     ------------------------------- */
+
+.cube { position: absolute; color: white; left: 2rem; top: 2rem; }
+.cube:nth-child(3) { top: 5rem; color: var(--red); }
+.cube:nth-child(4) { top: 5rem; color: var(--yel); }
+.cube:nth-child(5) { top: 8rem; color: var(--grn); }
+.cube:nth-child(6) { top: 8rem; color: var(--blu); }
+.cube:nth-child(2n) { left: 5rem; }
+
+.cube.card_out { left: 7.4rem; top: .5rem; font-size: .6em; }
+.cube.card_out:nth-child(2) { top: 2.0rem; }
+.cube.card_out:nth-child(3) { top: 3.5rem; }
+.cube.card_out:nth-child(4) { top: 5.0rem; }
+.cube.card_out:nth-child(5) { top: 6.5rem; }
+.cube.card_out:nth-child(6) { top: 8.0rem; }
+
 
 .dice {
-  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
   width: 2em;
   height: 2em;
-
-  display:flex;
+  display: flex;
+  position: absolute; 
   align-items: center;
+  border-radius: .2em;
   justify-content: center;
   background-color: currentColor;
-  background-image: radial-gradient(transparent 70%, black 130%);
-  border-radius: .2em;
-}
+  background-image: radial-gradient(transparent 70%, black 130%); }
 
-.cube > .dice:nth-child(1) { opacity: .3; display: none; }
+.dice:nth-child(1) { box-shadow: 0 0 .3em .1em rgba(0,0,0,.2); }
+.dice:nth-child(2) { opacity: .3; display: none; }
 
-	/* pips start hidden and are set to black by defualt */
-.dice > div { 
-  position: absolute;
-  background-image: radial-gradient(closest-side, black 80%, transparent);
-  width: 18%;
-  height: 18%;
+.card_out .dice { margin: 0 !important; }
+
+.pip, .numeral p { color: black; }
+.cube:nth-child(n + 3) .pip, .cube:nth-child(n + 3) .numeral p { color: white; }
+
+.pip {
+  top: 41%;
+  left: 41%;
+  width: 18%; 
+  height: 18%; 
   visibility: hidden;
-}
+  position: absolute;
+  background-image: radial-gradient(closest-side, currentColor 80%, transparent); }
 
-	/* position the 7 possible pips on the faces of the dice */
-.dice div { top: 41%; left: 18%; }
-.dice div:nth-child(1) { top: 18%; }
-.dice div:nth-child(2) { top: 18%; left: 64%; }
-.dice div:nth-child(4) { left: 41%; }
-.dice div:nth-child(5) { left: 64%; }
-.dice div:nth-child(6) { top: 64%; }
-.dice div:nth-child(7) { top: 64%; left: 64%; }
+.pip.top    { top:  18%; }
+.pip.bottom { top:  64%; }
+.pip.left   { left: 18%; }
+.pip.right  { left: 64%; }
 
-
-	/* pips on the 3rd and following dice are set to white */
-.cube:nth-child(n + 3) > div > div { background-image: radial-gradient(closest-side, white 80%, transparent); }
-
-	/* numerals start hidden and are set to black by default */
 .numeral {
-
-  font-size: 1.5em;
-  background-color: currentColor;
-
+  opacity: 0;
   width: 68%;
   height: 68%;
-  z-index: 1;
-  opacity: 0;
-  margin: auto;
   display: flex;
+  font-size: 150%;
+  position: absolute;
   align-items: center;
   justify-content: center;
   transition: opacity .5s;
-}
-
-.cube:nth-child(n) > div > span > span { color: black; }
-.cube:nth-child(n + 3) > div > span > span { color: white; }
-
-.cube.oncard { font-size: .65em;
-              left: 11.3em; top: 5.5em; }
-.cube.oncard:nth-child(2) { top: 8em; }
-.cube.oncard:nth-child(3) { top: 10.5em; }
-.cube.oncard:nth-child(4) { top: 13em; }
-.cube.oncard:nth-child(5) { top: 15.5em; }
-.cube.oncard:nth-child(6) { top: 18em; }
-.cube.oncard > .dice:nth-child(2) { margin: 0 !important;
-  box-shadow: 0 0 .3em .1em rgba(0,0,0,.2); }
+  background-color: currentColor; }
 
 
 
-.shift2s { transition: all .2s ease-out; }
-.shift5s { transition: all .5s ease-out; }
+.shift_2s { transition: all .2s ease-out; }
+.shift_5s { transition: all .5s ease-out; }
 
 
 
@@ -291,72 +283,33 @@ body {
 
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;"">
-<div id="rex">
+<div class="rex">
 
-  <div id="dicepad"></div>
-    
-  <div id="shake" class="bigbutton" onclick="shaker();">
-    S<div>SHAKE</div>
-  </div>
-  <div id="roll" class="bigbutton" onclick="roller();">
-    R<div>ROLL</div>
-  </div>
-
-  <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0; z-index: 1; visibility: visible;">+</div>
-  <div onclick="toggle_faces();" style="position: absolute; top: 0; right: 0; z-index: 1; visibility: visible;">#</div>
-
-  <div id="card" class="card">
+  <div class="dicepad"></div>
+  <div class="card">
     <div class="score bar"></div>
     <div class="score bar"></div>
     <div class="score bar"></div>
     <div class="score bar"></div>
-    <div id="penalty" class="bar"></div>
-    <div id="points" class="bar"></div>
+    <div class="penalty bar"></div>
+    <div class="points bar"></div>
+  </div>
+  <div class="dice_set"></div>
+
+  <div class="bigbutton shake" onclick="shaker();">
+    <div class="text1">S</div><div class="text2">SHAKE</div>
+  </div>
+  <div class="bigbutton roll" onclick="roller();">
+    <div class="text1">R</div><div class="text2">ROLL</div>
   </div>
 
-  <div id="dice_set" class="dicetray" style="position: absolute;">
-    <div class="cube"><div class="dice"></div>
-      <div class="dice">
-        <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        <span class="numeral"><span></span></span>
-      </div>
-    </div>
-    <div class="cube"><div class="dice"></div>
-      <div class="dice">
-        <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        <span class="numeral"><span></span></span>
-      </div>
-    </div>
-    <div class="cube"><div class="dice" onclick="in_out(-1, 0);"></div>
-      <div class="dice" onclick="in_out(1, 0);">
-        <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        <span class="numeral"><span></span></span>
-      </div>
-    </div>
-    <div class="cube"><div class="dice" onclick="in_out(-2, 0);"></div>
-      <div class="dice" onclick="in_out(2, 0);">
-        <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        <span class="numeral"><span></span></span>
-      </div>
-    </div>
-    <div class="cube"><div class="dice" onclick="in_out(-3, 0);"></div>
-      <div class="dice" onclick="in_out(3, 0);">
-        <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        <span class="numeral"><span></span></span>
-      </div>
-    </div>
-    <div class="cube"><div class="dice" onclick="in_out(-4, 0);"></div>
-      <div class="dice" onclick="in_out(4, 0);">
-        <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        <span class="numeral"><span></span></span>
-      </div>
-    </div>
-  </div>
+  <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0;">+</div>
 
 </div>
 
 <script type="text/javascript"> 'use strict';
 
+let $ = (selectors) => document.querySelector(selectors);
 let $id = id => document.getElementById(id);
 let $all = (selectors) => document.querySelectorAll(selectors);
 
@@ -389,7 +342,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
         s[i].children[j].className = 'tile' + (j == 10 ? ' tile_off' : '');
         s[i].children[j].setAttribute('onclick',`toggle_tile(${i}, ${j});`);
         s[i].children[j].appendChild(document.createElement('span'));
-        s[i].children[j].children[0].appendChild(document.createElement('span'));
+        s[i].children[j].children[0].appendChild(document.createElement('p'));
         s[i].children[j].children[0].children[0].innerText = (i < 2 ? j + 2 : 12 - j);
       }
       s[i].children[11].className += ' lock';
@@ -397,22 +350,53 @@ let $all = (selectors) => document.querySelectorAll(selectors);
       s[i].children[11].setAttribute('onclick',`toggle_lock(${i}, 0);`);
     }
 
-    let p = $id('penalty');
+    let p = $('.penalty');
     for (let i = 0; i < 4; i++) {
       p.appendChild(document.createElement('div'));
       p.children[i].className = 'tile';
       p.children[i].setAttribute('onclick',`toggle_penalty(${i});`);
       p.children[i].appendChild(document.createElement('span'));
-      p.children[i].children[0].appendChild(document.createElement('span'));
-      p.children[i].children[0].children[0].innerText = 'PASS';
+      p.children[i].children[0].appendChild(document.createElement('p'));
     }
 
-    let t = $id('points');
-    for (let i = 0; i < 7; i++) {
+    let t = $('.points');
+    for (let i = 0; i < 6; i++) {
       t.appendChild(document.createElement('div'));
       t.children[i].className = 'tile';
       t.children[i].appendChild(document.createElement('span'));
-      t.children[i].children[0].innerText = (i < 4 ? '+ 0' : i < 5 ? '- 0' : 'TOTAL SCORE:');
+      t.children[i].children[0].innerText = (i < 4 ? '+ 0' : '- 0');
+    }
+      t.children[5].appendChild(document.createElement('div'));
+
+
+    /*--------------------------------------------------------
+    - The dice set contains 6 cubes, and each cube contains 1 or 2 dice.
+    - The last 4 cubes are given 2 dice, since colored dice have a shadow element.
+    - The first 2 cubes contain 1 dice each that toggle numeral faces on click.
+    - The first dice of each cube contains 7 pips and then a numeral.
+    - The pips are given positions on the dice derived from an index count. */
+
+
+    let d = $('.dice_set');
+    for (let i = 0; i < 6; i++) {
+      d.appendChild(document.createElement('div'));
+      d.children[i].className = 'cube';
+
+      for (let j = 0; j * 4 < i + 3; j++) {
+        d.children[i].appendChild(document.createElement('div'));
+        d.children[i].children[j].className = 'dice';
+        d.children[i].children[j].setAttribute('onclick',`in_out(${(i - 1) * (j ? -1 : 1)}, 0);`);
+        if (i < 2) d.children[i].children[j].setAttribute('onclick','toggle_faces();');
+      }
+      for (let j = 0; j < 7; j++) {
+        d.children[i].children[0].appendChild(document.createElement('div'));
+        let pip = `pip${j < 2 ? ' top' : ''}${j > 4 ? ' bottom' : ''}`;
+        pip += `${!(j % 2.5 % 2) ? ' left' : ''}${j % 5 % 3 % 2 ? ' right' : ''}`;
+        d.children[i].children[0].children[j].className = pip;
+      }
+      d.children[i].children[0].appendChild(document.createElement('span'));
+      d.children[i].children[0].children[7].className = 'numeral';
+      d.children[i].children[0].children[7].appendChild(document.createElement('p'));
     }
 
   }
@@ -442,7 +426,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
     remove_animations();
 
     if (landscape != prior) {
-      $id('rex').style.transform = `rotate(${ landscape ? -90 : 0 }deg)`;
+      $('.rex').style.transform = `rotate(${ landscape ? -90 : 0 }deg)`;
       let flip = $all('.dice, .bigbutton, .tile');
       flip.forEach(e => { e.style.transform = `rotate(${ landscape ? 90 : 0 }deg)`; });
     }
@@ -453,8 +437,8 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function remove_animations() {
 
-    $all('.shift2s, .shift5s').forEach(e => {
-      e.classList.remove('shift2s', 'shift5s');
+    $all('.shift_2s, .shift_5s').forEach(e => {
+      e.classList.remove('shift_2s', 'shift_5s');
     });
 
   }
@@ -466,12 +450,11 @@ let $all = (selectors) => document.querySelectorAll(selectors);
     if (i > 0 && game_end) return;
     if (i < 0 && (dice_locked[4]) || dice_locked[-1 - i]) return;
 
-    let j = (i > 0 ? 1 : -1);
-    let d = $id('dice_set');
-    d.children[i * j + 1].children[(1 - j) / 2].style.display = 'flex';
-    d.children[i * j + 1].children[(1 + j) / 2].style.display = 'none';
+    let d = $('.dice_set').children[1 + Math.abs(i)];
+    d.children[(i > 0 ? 0 : 1)].style.display = 'none';
+    d.children[(i > 0 ? 1 : 0)].style.display = 'flex';
 
-    if (source < 1) toggle_lock((i * j - 1), 2);
+    if (source < 1) toggle_lock((Math.abs(i) - 1), 2);
 
   }
 
@@ -489,21 +472,17 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
     remove_animations();
 
-    let c = $id('card');
-    let d = $all('.cube, .bigbutton');
+    let e = $all('.card, .cube, .dice, .bigbutton, .text1');
 
-    c.classList.add('shift5s');
-    d.forEach(e => { e.classList.add('shift5s'); });
+    e.forEach(i => { i.classList.add('shift_5s'); });
 
     if (scorecard) {
-      c.classList.remove('card_out');
-      d.forEach(e => { e.classList.remove('oncard'); });
+      e.forEach(i => { i.classList.remove('card_out'); });
     } else {
-      c.classList.add('card_out');
-      d.forEach(e => { e.classList.add('oncard'); });
+      e.forEach(i => { i.classList.add('card_out'); });
     }
 
-    $id('dicepad').style.opacity = scorecard;
+    $('.dicepad').style.opacity = scorecard;
     scorecard = 1 - scorecard;
 
   }
@@ -514,7 +493,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
     if (dice_locked[4]) return;
 
-    let b = $id('card').children[bar];
+    let b = $('.card').children[bar];
     let t = b.children[tile].classList;
 
     if (b.classList.contains('locked_bar') && (tile < 10 || !t.contains('tile_sel'))) return;
@@ -556,7 +535,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function toggle_lock(bar, source) {
 
-    let c = $id('card');
+    let c = $('.card');
     let s = c.children[bar].children[11].classList;
 
     if (c.children[bar].classList.contains('locked_bar') && !s.contains('tile_off')) return;
@@ -594,8 +573,8 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function toggle_penalty(i) {
 
-    let p = $id('penalty');
-    let c = $id('card');
+    let p = $('.penalty');
+    let c = $('.card');
 
     if (p.classList.contains('locked_bar')) return;
     if (p.children[i].classList.contains('tile_sel') && undo < 1) return;
@@ -629,21 +608,21 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function update_points() {
 
-    let c = $id('card');
-    let p = $id('points');
+    let c = $('.card');
+    let p = $('.points');
 
-    let i = -5 * c.children[4].querySelectorAll('.tile_sel').length;
-    p.children[4].children[0].textContent = `- ${i * -1}`;
+    let s = -5 * c.children[4].querySelectorAll('.tile_sel').length;
+    p.children[4].children[0].textContent = `- ${s * -1}`;
 
     for (let j = 0; j < 4; j++) {
       let k = c.children[j].querySelectorAll('.tile_sel').length;
       let r = 0; while (k > 0) r += k--;
-      p.children[j].children[0].textContent = `+ ${r}`; i += r;
+      p.children[j].children[0].textContent = `+ ${r}`; s += r;
     }
 
-    p.children[6].children[0].textContent = i;
+    p.children[5].children[0].textContent = s;
 
-    p.children[5].style.opacity = p.children[6].style.opacity = game_end;
+    p.children[5].style.opacity = game_end;
 
   }
 
@@ -654,17 +633,12 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 	/* if not yet shaken, blank the dice */
 
     if (seed < 0) {
-      for (let i = 0; i < 6; i++) {
 
-        let d = $id('dice_set').children[i].children[1];
-        d.children[7].children[0].textContent = '';
+      $all('.numeral p').forEach(e => { e.textContent = ''; });
+      $all('.pip').forEach(e => { e.style.visibility = 'hidden'; });
 
-        for (let j = 0; j < 7; j++) {
-          d.children[j].style.visibility = 'hidden';
-        }
-      }
+      $('.roll').style.opacity = 1;
       seed = 0;
-      $id('roll').style.opacity = 1.0;
     }
 
 	/* each shake is added to the previous */
@@ -684,11 +658,13 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function jiggle() {
 
-    $all('.dice:nth-child(2)').forEach(e => {
-      e.classList.add('shift2s');
+    remove_animations();
+
+    $all('.dice:nth-child(1)').forEach(e => {
+      e.classList.add('shift_2s');
       e.style.top = `${.45 * (Math.random() - .5)}em`;
-      e.style.left = `${.45 * (Math.random() - .5)}em`;
-      e.style.margin = `${e.style.top} 0 0 ${e.style.left}`;
+      e.style.left = `${.9 * (Math.random() - .5)}em`;
+      e.style.marginTop = `${e.style.top}`;
     });
 
   }
@@ -697,7 +673,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function reveal_face(i, j) {
 
-    let d = $id('dice_set').children[i].children[1];
+    let d = $('.dice_set').children[i].children[0];
     d.children[7].children[0].textContent = (j + 1);
 
     if (j % 2 == 0) {
@@ -726,14 +702,16 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
     let rolled = Math.floor(seed * (6 ** 6)).toString(6).padStart(6, '0');
 
-    let d = $all('.dice:nth-child(2)');
+    remove_animations();
+
+    let d = $all('.dice:nth-child(1)');
     for (let i = 0; i < 6; i++) {
       reveal_face(i, parseInt(rolled.charAt(5 - i)));
-      d[i].classList.add('shift2s');
+      d[i].classList.add('shift_2s');
       d[i].style.top = d[i].style.left = d[i].style.margin = '0';
     }
 
-    $id('roll').style.opacity = .3;
+    $('.roll').style.opacity = .3;
     seed = -1;
 
   }
