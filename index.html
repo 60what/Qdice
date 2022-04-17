@@ -105,10 +105,10 @@ body {
   height: 15.8em;
   padding: .2em 0 0 0;
   background-color: currentColor;
-                      right: 2.0em; color: var(--red); }
-.score:nth-child(2) { right: 3.4em; color: var(--yel); }
-.score:nth-child(3) { right: 4.8em; color: var(--grn); }
-.score:nth-child(4) { right: 6.2em; color: var(--blu); }
+                      left: 5.6em; color: var(--red); }
+.score:nth-child(2) { left: 4.2em; color: var(--yel); }
+.score:nth-child(3) { left: 2.8em; color: var(--grn); }
+.score:nth-child(4) { left: 1.4em; color: var(--blu); }
 
 .score .tile     { background-color: var(--fog); }
 .score .tile_off { background-color: var(--mst); }
@@ -126,15 +126,13 @@ body {
 .score.locked_bar > .tile:nth-child(11) { opacity: 1; }
 .score.locked_bar > .lock > span > p { opacity: 1; }
 
-.penalty.bar { top: 8em; right: 7.6em; }
+.penalty.bar { top: 8em; }
 .penalty .tile { color: var(--gry); background-color: currentColor; }
 .penalty .tile_sel { color: var(--drk); }
 .penalty .tile span { background-color: var(--prl); font-size: 38%; }
 .penalty .tile span::before { content: 'PASS'; }
 
-.points { right: 7.6em; }
-
-.points .tile { margin: .06em .1em .06em .1em; xbackground: red;
+.points .tile { margin: .06em .1em .06em .1em;;
                              color: var(--drk); }
 .points .tile:nth-child(1) { color: var(--red); }
 .points .tile:nth-child(2) { color: var(--yel); }
@@ -142,17 +140,19 @@ body {
 .points .tile:nth-child(4) { color: var(--blu); }
 .points .tile:nth-child(5) { color: var(--gry); }
 
-.points .tile:nth-child(6) { top: .1em; opacity: 0;
-  transition: opacity .5s;
-  align-items: flex-end; }
+.points .tile:nth-child(6) {
+  top: .1em;
+  opacity: 0;
+  align-items: flex-end;
+  transition: opacity .5s; }
 
 .points .tile span {
-  font-size: .5em;
   width: 2.2em;
   height: 1.6em;
-  border: .1em solid currentColor;
+  font-size: .5em;
   border-radius: .4em;
-  background-color: var(--prl); }
+  background-color: var(--prl);
+  border: .1em solid currentColor; }
 
 .points .tile:nth-child(6) span { height: 1.3em; margin-bottom: .15em; }
 
@@ -163,43 +163,50 @@ body {
   position:absolute;
   text-align: center; }
 
+.points .tile:nth-child(-n + 4) span::before { content: '+\00a0'; }
+.points .tile:nth-child(5) span::before { content: '-\00a0'; }
 .points .tile:nth-child(6) div::before { content: 'TOTAL'; }
 
 
 
 .bigbutton {
-  width: 2.3em;
-  height: 2.3em;
-  left: 1.667em;
-  top: 11.667em;
+  left: 2.917rem;
+  top: 11.667rem;
   text-align: center;
   position: absolute;
+  font-family: 'Verdana-Bold', sans-serif;
+  text-shadow: 0 .04rem .06rem var(--tan); }
+
+.bigbutton.text1 {
+  width: 2.3em;
+  height: 2.3em;
+  margin-left: -1.25em;
   border-radius: .4em;
   border: .1em solid var(--drk);
-  font-family: 'Verdana-Bold', sans-serif;
-  text-shadow: 0 .04rem .06rem var(--tan);
   background-image: linear-gradient(var(--oat) 0, var(--brn) 100%); }
 
-.bigbutton.card_out { font-size: .55em; top: 11.3rem; left: 7.3rem; }
-
-.shake:active { opacity: .3; }
-.roll { left: 4.833em; opacity: .3; }
-
-.roll.card_out { top: 9.7rem; }
-
-.bigbutton .text1 { font-size: 135%;
-  position: absolute;
-  width: 100%; }
-
-.bigbutton.card_out .text1 { font-size: 173%; }
-
-.bigbutton .text2 { font-size: .5em;
+.bigbutton.text1 div {
+  font-size: .5em;
   position: absolute;
   width: 100%;
   top: 3em;
-  transition: opacity .5s ; }
+  transition: opacity .5s; }
 
-.bigbutton.card_out .text2 { opacity: 0; }
+.bigbutton.text2 {
+  width: 1em;
+  height: 2.5rem;
+  margin-left: -.5em;
+  font-size: 1.4rem; }
+
+.shake:active { opacity: .3; }
+.roll .bigbutton { left: 6.083rem; }
+.roll { opacity: .3; }
+
+.bigbutton.card_out { font-size: .55em; top: 11.3rem; left: 8rem; }
+.roll .bigbutton.card_out { top: 9.7rem; }
+
+.bigbutton.text1.card_out div { opacity: 0; }
+.bigbutton.text2.card_out { font-size: 1.05rem; height: 1.375rem; }
 
 
 
@@ -212,9 +219,9 @@ body {
 .cube:nth-child(4) { top: 5rem; color: var(--yel); }
 .cube:nth-child(5) { top: 8rem; color: var(--grn); }
 .cube:nth-child(6) { top: 8rem; color: var(--blu); }
-.cube:nth-child(2n) { left: 5rem; }
+.cube:nth-child(even) { left: 5rem; }
 
-.cube.card_out { left: 7.4rem; top: .5rem; font-size: .6em; }
+.cube.card_out { left: 7.39rem; top: .5rem; font-size: .6em; }
 .cube.card_out:nth-child(2) { top: 2.0rem; }
 .cube.card_out:nth-child(3) { top: 3.5rem; }
 .cube.card_out:nth-child(4) { top: 5.0rem; }
@@ -239,7 +246,7 @@ body {
 .dice:nth-child(1) { box-shadow: 0 0 .3em .1em rgba(0,0,0,.2); }
 .dice:nth-child(2) { opacity: .3; display: none; }
 
-.card_out .dice { margin: 0 !important; }
+.card_out .dice { margin-top: 0 !important; }
 
 .pip, .numeral p { color: black; }
 .cube:nth-child(n + 3) .pip, .cube:nth-child(n + 3) .numeral p { color: white; }
@@ -272,8 +279,8 @@ body {
 
 
 
-.shift_2s { transition: all .2s ease-out; }
-.shift_5s { transition: all .5s ease-out; }
+.anim200ms { transition: all .2s ease-out; }
+.anim500ms { transition: all .5s ease-out; }
 
 
 
@@ -296,11 +303,14 @@ body {
   </div>
   <div class="dice_set"></div>
 
-  <div class="bigbutton shake" onclick="shaker();">
-    <div class="text1">S</div><div class="text2">SHAKE</div>
+  <div class="shake" onclick="shaker();">
+    <div class="bigbutton text1"><div>SHAKE</div></div>
+    <div class="bigbutton text2">S</div>
   </div>
-  <div class="bigbutton roll" onclick="roller();">
-    <div class="text1">R</div><div class="text2">ROLL</div>
+
+  <div class="roll" onclick="roller();">
+    <div class="bigbutton text1"><div>ROLL</div></div>
+    <div class="bigbutton text2">R</div>
   </div>
 
   <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0;">+</div>
@@ -321,7 +331,8 @@ let $all = (selectors) => document.querySelectorAll(selectors);
   var use_numerals = 0;				/* pips are displayed by defualt */
 
   var shake_count = 0;
-  var scorecard = 0; 
+  var scorecard = 0;
+  var penalties = 0;
   var game_end = 0;
 
   var undo = 1;
@@ -354,7 +365,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
     for (let i = 0; i < 4; i++) {
       p.appendChild(document.createElement('div'));
       p.children[i].className = 'tile';
-      p.children[i].setAttribute('onclick',`toggle_penalty(${i});`);
+      p.children[i].setAttribute('onclick',`toggle_penalty(this);`);
       p.children[i].appendChild(document.createElement('span'));
       p.children[i].children[0].appendChild(document.createElement('p'));
     }
@@ -364,9 +375,9 @@ let $all = (selectors) => document.querySelectorAll(selectors);
       t.appendChild(document.createElement('div'));
       t.children[i].className = 'tile';
       t.children[i].appendChild(document.createElement('span'));
-      t.children[i].children[0].innerText = (i < 4 ? '+ 0' : '- 0');
+      t.children[i].children[0].innerText = '0';
     }
-      t.children[5].appendChild(document.createElement('div'));
+    t.children[5].appendChild(document.createElement('div'));
 
 
     /*--------------------------------------------------------
@@ -379,24 +390,27 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
     let d = $('.dice_set');
     for (let i = 0; i < 6; i++) {
-      d.appendChild(document.createElement('div'));
-      d.children[i].className = 'cube';
+      let c = document.createElement('div');
+      c.className = 'cube';
 
       for (let j = 0; j * 4 < i + 3; j++) {
-        d.children[i].appendChild(document.createElement('div'));
-        d.children[i].children[j].className = 'dice';
-        d.children[i].children[j].setAttribute('onclick',`in_out(${(i - 1) * (j ? -1 : 1)}, 0);`);
-        if (i < 2) d.children[i].children[j].setAttribute('onclick','toggle_faces();');
+        let e = document.createElement('div');
+        e.className = 'dice';
+        e.setAttribute('onclick',`in_out(${(i - 1) * (j ? -1 : 1)}, 0);`);
+        if (i < 2) e.setAttribute('onclick','toggle_faces();');
+        c.appendChild(e);
       }
       for (let j = 0; j < 7; j++) {
-        d.children[i].children[0].appendChild(document.createElement('div'));
-        let pip = `pip${j < 2 ? ' top' : ''}${j > 4 ? ' bottom' : ''}`;
-        pip += `${!(j % 2.5 % 2) ? ' left' : ''}${j % 5 % 3 % 2 ? ' right' : ''}`;
-        d.children[i].children[0].children[j].className = pip;
+        let e = document.createElement('div');
+        e.className = 'pip';
+        e.className += `${j < 2 ? ' top' : j > 4 ? ' bottom' : ''}`;
+        e.className += `${!(j % 2.5 % 2) ? ' left' : j % 5 % 3 % 2 ? ' right' : ''}`;
+        c.children[0].appendChild(e);
       }
-      d.children[i].children[0].appendChild(document.createElement('span'));
-      d.children[i].children[0].children[7].className = 'numeral';
-      d.children[i].children[0].children[7].appendChild(document.createElement('p'));
+      c.children[0].appendChild(document.createElement('span'));
+      c.children[0].children[7].className = 'numeral';
+      c.children[0].children[7].appendChild(document.createElement('p'));
+      d.appendChild(c);
     }
 
   }
@@ -437,8 +451,8 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function remove_animations() {
 
-    $all('.shift_2s, .shift_5s').forEach(e => {
-      e.classList.remove('shift_2s', 'shift_5s');
+    $all('.anim200ms, .anim500ms').forEach(e => {
+      e.classList.remove('anim200ms', 'anim500ms');
     });
 
   }
@@ -472,9 +486,9 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
     remove_animations();
 
-    let e = $all('.card, .cube, .dice, .bigbutton, .text1');
+    let e = $all('.card, .cube, .xdice, .bigbutton, .text1'); // chrome animates children AFTER parents
 
-    e.forEach(i => { i.classList.add('shift_5s'); });
+    e.forEach(i => { i.classList.add('anim500ms'); });
 
     if (scorecard) {
       e.forEach(i => { i.classList.remove('card_out'); });
@@ -571,33 +585,33 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
 
 
-  function toggle_penalty(i) {
+  function toggle_penalty(e) {
 
+    let b = $all('.score', '.penalty');
     let p = $('.penalty');
-    let c = $('.card');
 
     if (p.classList.contains('locked_bar')) return;
-    if (p.children[i].classList.contains('tile_sel') && undo < 1) return;
+    if (e.classList.contains('tile_sel') && undo < 1) return;
 
-    let k = p.querySelectorAll('.tile_sel').length;
+    if (e.classList.contains('tile_sel')) {
 
-    if (p.children[i].classList.contains('tile_sel')) {
-
-      p.children[k - 1].classList.remove('tile_sel');
+      penalties--;
+      p.children[penalties].classList.remove('tile_sel');
       dice_locked[4] = game_end = 0; undo -= consume;
 
       for (let j = 0; j < 4; j++) {
-        if (!c.children[j].lastChild.classList.contains('tile_off')) {
-          c.children[j].classList.remove('locked_bar');
+        if (!b[j].lastChild.classList.contains('tile_off')) {
+          b[j].classList.remove('locked_bar');
         }
       }
     } else {
 
-      p.children[k].classList.add('tile_sel');
+      p.children[penalties].classList.add('tile_sel');
+      penalties++;
 
-      if (k > 2) {
+      if (penalties > 3) {
         dice_locked[4] = game_end = 1;
-        for (let j = 0; j < 4; j++) c.children[j].classList.add('locked_bar');
+        for (let j = 0; j < 4; j++) b[j].classList.add('locked_bar');
       }
     }
 
@@ -608,21 +622,21 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   function update_points() {
 
-    let c = $('.card');
-    let p = $('.points');
+    let b = $all('.score');
+    let p = $all('.points > .tile');
 
-    let s = -5 * c.children[4].querySelectorAll('.tile_sel').length;
-    p.children[4].children[0].textContent = `- ${s * -1}`;
+    let s = -5 * penalties;
+    p[4].children[0].textContent = -1 * s;
 
     for (let j = 0; j < 4; j++) {
-      let k = c.children[j].querySelectorAll('.tile_sel').length;
+      let k = b[j].querySelectorAll('.tile_sel').length;
       let r = 0; while (k > 0) r += k--;
-      p.children[j].children[0].textContent = `+ ${r}`; s += r;
+      p[j].children[0].textContent = r; s += r;
     }
 
-    p.children[5].children[0].textContent = s;
+    p[5].children[0].textContent = s;
 
-    p.children[5].style.opacity = game_end;
+    p[5].style.opacity = game_end;
 
   }
 
@@ -661,10 +675,10 @@ let $all = (selectors) => document.querySelectorAll(selectors);
     remove_animations();
 
     $all('.dice:nth-child(1)').forEach(e => {
-      e.classList.add('shift_2s');
+      e.classList.add('anim200ms');
       e.style.top = `${.45 * (Math.random() - .5)}em`;
       e.style.left = `${.9 * (Math.random() - .5)}em`;
-      e.style.marginTop = `${e.style.top}`;
+//      e.style.marginTop = `${e.style.top}`;
     });
 
   }
@@ -676,20 +690,20 @@ let $all = (selectors) => document.querySelectorAll(selectors);
     let d = $('.dice_set').children[i].children[0];
     d.children[7].children[0].textContent = (j + 1);
 
-    if (j % 2 == 0) {
-      d.children[3].style.visibility = 'visible';
+    if (j % 2 == 0) { // 1 3 5
+      d.children[3].style.visibility = 'visible'; // center
     }
-    if (j != 0) {
-      d.children[1].style.visibility = 'visible';
-      d.children[5].style.visibility = 'visible';
+    if (j != 0) { // 2 3 4 5 6
+      d.children[1].style.visibility = 'visible'; // top right
+      d.children[5].style.visibility = 'visible'; // bottom left
     }
-    if (j > 2) {
-      d.children[0].style.visibility = 'visible';
-      d.children[6].style.visibility = 'visible';
+    if (j > 2) { // 4 5 6
+      d.children[0].style.visibility = 'visible'; // top left
+      d.children[6].style.visibility = 'visible'; // bottom right
     }
-    if (j > 4) {
-      d.children[2].style.visibility = 'visible';
-      d.children[4].style.visibility = 'visible';
+    if (j > 4) { // 6
+      d.children[2].style.visibility = 'visible'; // center left
+      d.children[4].style.visibility = 'visible'; // center right
     }
 
   }
@@ -706,8 +720,8 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
     let d = $all('.dice:nth-child(1)');
     for (let i = 0; i < 6; i++) {
-      reveal_face(i, parseInt(rolled.charAt(5 - i)));
-      d[i].classList.add('shift_2s');
+      reveal_face(i, parseInt(rolled.charAt(i)));
+      d[i].classList.add('anim200ms');
       d[i].style.top = d[i].style.left = d[i].style.margin = '0';
     }
 
