@@ -315,7 +315,7 @@ body {
 
   <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0;">+</div>
   <div onclick="clear_game();" style="position: absolute; bottom: 0; right: 0;">X</div>
-  <div id="exit" onclick="window.close();" style="position: absolute; top: 0; right: 0; font-size: 70%; visibility: hidden;"">exit</div>
+  <div id="exit" onclick="history.back();" style="position: absolute; top: 0; right: 0; font-size: 70%; visibility: hidden;"">exit</div>
 
 </div>
 
@@ -432,7 +432,7 @@ let $all = (selectors) => document.querySelectorAll(selectors);
       d.appendChild(c);
     }
 
-    handleBackEvents(); //------------------------------------------------------------------------------------
+ //   handleBackEvents(); //------------------------------------------------------------------------------------
 
 let mode = document.location.href.toString().search('user_mode=app');
 if (mode > -1) { $id('exit').style.visibility = 'visible'; }
