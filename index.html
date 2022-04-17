@@ -318,6 +318,23 @@ body {
 
 </div>
 
+<script type = "text/javascript" >
+
+
+
+function handleBackEvents() {
+  window.history.pushState({}, '');
+  window.addEventListener('popstate', () => {
+    setTimeout(() => {
+      window.history.pushState({}, '');
+    }, 2000);
+  });
+}
+
+
+
+</script>
+
 <script type="text/javascript"> 'use strict';
 
 let $ = (selectors) => document.querySelector(selectors);
@@ -414,7 +431,10 @@ let $all = (selectors) => document.querySelectorAll(selectors);
       d.appendChild(c);
     }
 
+    handleBackEvents(); //------------------------------------------------------------------------------------
+
   }
+
 
 
 
@@ -742,7 +762,6 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
     let c = $all('.locked_bar, .tile_sel, .tile_off');
     c.forEach(e => { e.classList.remove('locked_bar', 'tile_sel', 'tile_off'); });
-
     $all('.score').forEach(e => { e.children[10].classList.add('tile_off'); });
 
     $all('.dice:nth-child(1)').forEach(e => { e.style.display = 'flex'; });
