@@ -329,6 +329,16 @@ body {
     <div class="score bar"></div>
     <div class="penalty bar"></div>
     <div class="points bar"></div>
+
+  <div onclick="modal_to_reset(0);" class="tile" style="top: 13.4em;">
+    <svg viewBox="0 0 24 24" stroke="#222" fill="none">
+    <path d="M22 13l-2-2-2 2m2-1a8 8 0 0 1-8 8m0 0c-.552 0-1.091-.056-1.612-.163a7.94 7.94
+    0 0 1-1.502-.466 7.98 7.98 0 0 1-1.359-.738 8.04 8.04 0 0 1-2.161-2.161M2 11l2 2 2-2m-2
+    1a8 8 0 0 1 8-8m0 0c.552 0 1.091.056 1.612.163a7.94 7.94 0 0 1 1.502.466 7.98 7.98 0 0
+    1 1.359.738 8.04 8.04 0 0 1 2.161 2.161" stroke-linecap="round"/>
+    <g stroke-width="2"><path d="M9 15l6-6"/><path d="M9 9l6 6"/></g></svg>
+  </div>
+
   </div>
   <div class="dice_set"></div>
 
@@ -342,9 +352,15 @@ body {
     <div class="bigbutton text2">R</div>
   </div>
 
-  <div onclick="toggle_scorecard();" style="position: absolute; bottom: 0;">+</div>
-  <div onclick="modal_to_reset(0);" style="position: absolute; bottom: 0; right: 0;">X</div>
-  <div id="app" style="position: absolute; top: 0; right: 0; font-size: 50%; visibility: hidden;""> v0.1</div>
+  <div onclick="toggle_scorecard();" class="tile" style="top: 14.6em;">
+    <svg viewBox="0 0 24 24" stroke="#222" fill="none">
+    <g transform="rotate(45 26.243 14.414)"><path d="M15 12h3v3h-3z"/>
+    <path d="M15 15v6m3-6v6m-3 0l1.5 1.5L18 21" stroke-linecap="round"/>
+    </g><path d="M5 13.5h6m-6 3h13.5"/>
+    <path d="M16.5 4.5h-14v15h18v-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
+  <div id="app" style="position: absolute; top: 0; right: 0; font-size: 30%; visibility: hidden;""> v0.1</div>
 
 </div>
 
@@ -352,7 +368,7 @@ body {
 
   <div class="alert">
     <div>
-      reset
+      Clear the<br>Scorecard?
       <br><br>
       <span onclick="modal_to_reset(2);">yes</span>
       <br><br>
@@ -831,6 +847,16 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   }
 
+let ii = 0;
+for (let xx = 0; xx < 16; xx++) {
+  for (let yy = xx + 1; yy < 16; yy++) {
+    for (let zz = yy + 1; zz < 16; zz++) {
+      ii++;
+      console.log(`${xx} ${yy} ${zz} ---- ${ii}`);
+    }
+  }
+}
+console.log(ii);
 
 
 /* -------------------------------------
