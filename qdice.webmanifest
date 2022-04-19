@@ -2,15 +2,15 @@
   "name": "Quick Dice",
   "icons": [
     {
-      "src": "./icon20.svg",
+      "src": "./icon512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     { 
-      "src": "./icon17.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
+      "src": "./icon230.png",
+      "sizes": "230x230",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ],
