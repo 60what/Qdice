@@ -847,17 +847,6 @@ let $all = (selectors) => document.querySelectorAll(selectors);
 
   }
 
-let ii = 0;
-for (let xx = 0; xx < 16; xx++) {
-  for (let yy = xx + 1; yy < 16; yy++) {
-    for (let zz = yy + 1; zz < 16; zz++) {
-      ii++;
-      console.log(`${xx} ${yy} ${zz} ---- ${ii}`);
-    }
-  }
-}
-console.log(ii);
-
 
 /* -------------------------------------
    not my code: MurmurHash3 + sfc32 PRNG
