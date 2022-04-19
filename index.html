@@ -290,19 +290,27 @@ body {
 
 .alert {
   position: absolute;
-  width: 9em; height: 9em;
-  color: white;
+  width: 8rem; height: 8rem;
+  xcolor: white;
+  background-color: var(--prl);
   display: flex;
   align-items: center;
-  text-shadow: 0 0 .2em black;
+  font-size: .7em;
+  font-family: 'Verdana-Bold', sans-serif;
+  xtext-shadow: 0 0 .2em black;
+  text-align: center;
   visibility: hidden; }
 
 .alert div {
   width: 100%;
-  text-align: center; }
+  xtext-align: center; }
 
 .alert span { color: var(--grn); }
 .alert span:nth-of-type(2) { color: var(--red); }
+
+.exit {
+  box-shadow: 0 0 .5em .2em rgba(0,0,0,.5);
+}
 
 
 
@@ -329,7 +337,7 @@ body {
     <div class="penalty bar"></div>
     <div class="points bar"></div>
 
-  <div onclick="modal_to_reset(0);" class="tile nav_reset" style="top: 13.4em;"></div>
+  <div onclick="modal_to_reset(0);" class="tile svg_reset" style="top: 13.4em;"></div>
 
   </div>
   <div class="dice_set"></div>
@@ -344,9 +352,7 @@ body {
     <div class="bigbutton text2">R</div>
   </div>
 
-  <div onclick="toggle_scorecard();" class="tile nav_scorecard" style="top: 14.6em;"></div>
-
-  <div id="app" style="position: absolute; top: 0; right: 0; font-size: 30%; visibility: hidden;"> v0.1</div>
+  <div onclick="toggle_scorecard();" class="tile svg_scorecard" style="top: 14.6em; color: white;"></div>
 
 </div>
 
@@ -362,6 +368,10 @@ body {
     </div>
   </div>
 
+  <div class="alert exit" style="height: 2rem; top: .5rem;">
+    <div>Double tap BACK<br>to exit the app</div>
+  </div>
+
 <script type = "text/javascript" >
 
 
@@ -370,12 +380,12 @@ function handleBackEvents() {
   window.history.pushState({}, '');
   window.addEventListener('popstate', () => {
 
-    console.log('Double tap back to exit');
+    $('.exit').style.visibility = 'visible';
 
     setTimeout(() => {
       window.history.pushState({}, '');
 
-      console.log('----');
+      $('.exit').style.visibility = 'hidden';
 
     }, 2000);
   });
@@ -397,20 +407,24 @@ function handleBackEvents() {
   - Simple vector images can be included inline and reused as needed.
   - SVG files are text readable and included as template literals.
   - These can be easily parsed into background image data files.
-  - On page load, they are assigned to any element with a matching class. */
+  - On page load, they are assigned to all elements with a matching class.
+  - So, these classes should not be added to an element's class list later.
+  - Color can be changed dynamically: https://codepen.io/sosuke/pen/Pjoqqp */
 
-  const svg_scorecard = `
-  <svg viewBox='0 0 24 24' stroke='#222' fill='none'>
+  const svg = new Map();
+
+  svg.set('svg_scorecard',
+  `<svg viewBox='0 0 24 24' stroke='#222' fill='none'>
     <g transform='rotate(45 26.243 14.414)'>
       <path d='M15 12h3v3h-3z'/>
       <path d='M15 15v6m3-6v6m-3 0l1.5 1.5L18 21' stroke-linecap='round'/>
     </g>
     <path d='M5 13.5h6m-6 3h13.5'/>
     <path d='M16.5 4.5h-14v15h18v-6' stroke-linecap='round' stroke-linejoin='round'/>
-  </svg>`;
+  </svg>`);
 
-  const svg_reset = `
-  <svg viewBox='0 0 24 24' stroke='#222' fill='none'>
+  svg.set('svg_reset',
+  `<svg viewBox='0 0 24 24' stroke='#222' fill='none'>
     <path d='M22 13l-2-2-2 2m2-1a8 8 0 0 1-8 8m0 0c-.552 0-1.091-.056-1.612-.163a7.94 7.94 0
       0 1-1.502-.466 7.98 7.98 0 0 1-1.359-.738 8.04 8.04 0 0 1-2.161-2.161M2 11l2 2 2-2m-2
       1a8 8 0 0 1 8-8m0 0c.552 0 1.091.056 1.612.163a7.94 7.94 0 0 1 1.502.466 7.98 7.98 0 0
@@ -419,11 +433,11 @@ function handleBackEvents() {
       <path d='M9 15l6-6'/>
       <path d='M9 9l6 6'/>
     </g>
-  </svg>`;
+  </svg>`);
 
 
 
-  var pwa = document.location.href.toString().search('user_mode=app');
+  var pwa = document.location.href.toString().includes('user_mode=app');
 
   var landscape = -1;	 			/* landscape unknown */
   var seed = -1;				/* indicates dice not shaken yet */
@@ -444,11 +458,14 @@ function handleBackEvents() {
 
 
 
-  function svg_bg(e, svg) {
+  function svg_bg(e) {
+
+    let c = Array.from(e.classList).find(x => x.includes('svg_'));
+    if (!svg.get(c))  { console.log (`SVG for ${c} not found`); return; }
 
     // make SVG compliant, then URI encode < > #, then remove line breaks
 
-    let bg = svg.replace(`<svg`, `<svg xmlns='http://www.w3.org/2000/svg'`);
+    let bg = svg.get(c).replace(`<svg`, `<svg xmlns='http://www.w3.org/2000/svg'`);
     bg = bg.replace(/[<>#]/g, encodeURIComponent);
     bg = bg.replace(/[\r\n]/g, '');
 
@@ -460,8 +477,7 @@ function handleBackEvents() {
 
   function populate() {
 
-    if (pwa > -1) {
-      $id('app').style.visibility = 'visible';
+    if (pwa) {
       handleBackEvents(); //------------------------------------------------------------------------------------
     }
 
@@ -533,8 +549,7 @@ function handleBackEvents() {
       d.appendChild(c);
     }
 
-    $all('.svg_scorecard').forEach(e => { svg_bg(e, svg_scorecard); });
-    $all('.svg_reset').forEach(e => { svg_bg(e, svg_reset); });
+    $all('[class*="svg_"]').forEach(e => { svg_bg(e); });
 
   }
 
