@@ -29,10 +29,11 @@
 
   --prl: #eee;
   --gry: #aaa;
-  --drk: #222;
+  --drk: #333;
 
   --mst: rgba(255, 255, 255, .15);
   --fog: rgba(255, 255, 255, .5);
+  --shd: rgba(0, 0, 0, .5);
 }
 
 @font-face { font-family: 'Roboto-Black'; src: url('./Roboto-Black.ttf') format('truetype'); }
@@ -65,7 +66,8 @@ body {
   border-radius: .33em;
   transition: opacity .5s;
   background-color: var(--drk);
-  box-shadow: 0 0 .4em -.02em black; }
+  box-shadow: 0 0 .4em .05em var(--shd);
+  xbox-shadow: 0 0 .4em -.02em black; }
 
 .card {
   opacity: 0;
@@ -100,32 +102,58 @@ body {
 
 
 
-.score.bar {
-  height: 15.8em;
-  padding: .2em 0 0 0;
-  background-color: currentColor;
-                      left: 5.6em; color: var(--red); }
-.score:nth-child(2) { left: 4.2em; color: var(--yel); }
-.score:nth-child(3) { left: 2.8em; color: var(--grn); }
-.score:nth-child(4) { left: 1.4em; color: var(--blu); }
+.c1 { color: var(--red); }
+.c2 { color: var(--yel); }
+.c3 { color: var(--grn); }
+.c4 { color: var(--blu); }
 
-.score .tile     { background-color: var(--fog); }
-.score .tile_off { background-color: var(--mst); }
+.score {              left: 5.6em; color: var(--red); }
+.score:nth-child(3) { left: 4.2em; color: var(--yel); }
+.score:nth-child(4) { left: 2.8em; color: var(--grn); }
+.score:nth-child(5) { left: 1.4em; color: var(--blu); }
+
+.colormixx .score:nth-child(2) .mixxbg:nth-child(-n + 9) { color: var(--grn); }
+.colormixx .score:nth-child(2) .mixxbg:nth-child(-n + 6) { color: var(--blu); }
+.colormixx .score:nth-child(2) .mixxbg:nth-child(-n + 3) { color: var(--yel); }
+
+.colormixx .score:nth-child(3) .mixxbg:nth-child(-n + 8) { color: var(--blu); }
+.colormixx .score:nth-child(3) .mixxbg:nth-child(-n + 6) { color: var(--grn); }
+.colormixx .score:nth-child(3) .mixxbg:nth-child(-n + 2) { color: var(--red); }
+
+.colormixx .score:nth-child(4) .mixxbg:nth-child(-n + 9) { color: var(--red); }
+.colormixx .score:nth-child(4) .mixxbg:nth-child(-n + 6) { color: var(--yel); }
+.colormixx .score:nth-child(4) .mixxbg:nth-child(-n + 3) { color: var(--blu); }
+
+.colormixx .score:nth-child(5) .mixxbg:nth-child(-n + 8) { color: var(--yel); }
+.colormixx .score:nth-child(5) .mixxbg:nth-child(-n + 6) { color: var(--red); }
+.colormixx .score:nth-child(5) .mixxbg:nth-child(-n + 2) { color: var(--grn); }
+
+.mixxbg { background-color: currentColor;
+                      padding: .05em .1em .05em .1em; }
+.mixxbg:first-child { padding-top: .3em; }
+.mixxbg:last-child  { padding-bottom: .2em; }
+
+.score .tile { margin: 0; background-color: var(--fog); }
+.score .tile_off        { background-color: var(--mst); }
 
 .score .tile_sel { background-color: white !important; }
 .score .tile_sel span { background-color: currentColor; }
 .score .tile_sel span p { color: white !important; }
 
+.score .tile p:last-child { display: none; }
+.numbermixx .score .tile p { display: none; }
+.numbermixx .score .tile p:last-child { display: flex; }
+
 .lock, .lock span { border-radius: 50%; }
 .lock span p { opacity: 0; }
 
-.score.locked_bar > .tile          { background-color: var(--mst); }
-.score.locked_bar > .lock.tile_off { background-color: var(--fog); }
-.score.locked_bar > .tile_sel           { opacity: .7; }
-.score.locked_bar > .tile:nth-child(11) { opacity: 1; }
-.score.locked_bar > .lock > span > p { opacity: 1; }
+.score.locked_bar .tile          { background-color: var(--mst); }
+.score.locked_bar .lock.tile_off { background-color: var(--fog); }
+.score.locked_bar .tile_sel                       { opacity: .7; }
+.score.locked_bar .mixxbg:nth-child(11) .tile_sel { opacity:  1; }
+.score.locked_bar .lock span p { opacity: 1; }
 
-.penalty.bar { top: 8em; }
+.penalty { top: 8em; }
 .penalty .tile { color: var(--gry); background-color: currentColor; }
 .penalty .tile_sel { color: var(--drk); }
 .penalty .tile span { background-color: var(--prl); font-size: 38%; }
@@ -242,7 +270,7 @@ body {
   background-color: currentColor;
   background-image: radial-gradient(transparent 70%, black 130%); }
 
-.dice:nth-child(1) { box-shadow: 0 0 .3em .1em rgba(0,0,0,.2); }
+.dice:nth-child(1) { box-shadow: 0 0 .4em -.05em var(--shd); }
 .dice:nth-child(2) { opacity: .3; display: none; }
 
 .card_out .dice { margin-top: 0 !important; }
@@ -285,7 +313,7 @@ body {
 //  width: 100vmin;
 //  height: 100vmax;
 //  margin: 8em 0 0 4.5em;
-  background-color: rgba(0,0,0,.7);
+  background-color: var(--shd);
   visibility: hidden; }
 
 .alert {
@@ -293,26 +321,84 @@ body {
   width: 8rem; height: 8rem;
   xcolor: white;
   background-color: var(--prl);
-  display: flex;
-  align-items: center;
-  font-size: .7em;
-  font-family: 'Verdana-Bold', sans-serif;
+  xdisplay: flex;
+  xalign-items: center;
+  font-size: .4em;
+  xfont-family: 'Verdana-Bold', sans-serif;
   xtext-shadow: 0 0 .2em black;
   text-align: center;
+  border-radius: .5em;
+  box-shadow: 0 0 .5em .2em var(--shd);
   visibility: hidden; }
 
-.alert div {
-  width: 100%;
-  xtext-align: center; }
+.alert .boards {
+  position: relative; display: flex;
+  width: 8rem; height: 2.5rem; align-items: center; justify-content: center; }
+
+.alert .boards:nth-child(1) { align-items: flex-end; }
+
+.boards div { 
+  margin: .3rem; width: 2rem; height: 2rem; float: left; }
+
+.boards span { border-radius: .5em; border: .1em solid var(--drk); background-color: white;
+  height: 4.8em; width: 4.8em; display: flex; align-items: center; justify-content: center;}
+
+.alert .boards:nth-child(3) { width: 7.5rem; align-items: flex-end; justify-content: right; }
+
+.alert .boards:nth-child(3) span { height: 2em; width: 4em; }
+
+.minitile {
+  margin: .03rem;
+  background-color: currentColor;
+  width: .5rem;
+  height: .5rem;
+  font-size: .35rem;
+  display: flex;
+  position: relative; float: left;
+  border-radius: .3em;
+  align-items: center;
+  justify-content: center; }
+
+.minitile p { color: white;}
+
 
 .alert .ok { color: var(--grn); }
 .alert .no { color: var(--red); }
 
-.exit {
-  box-shadow: 0 0 .5em .2em rgba(0,0,0,.5);
-}
+.toast {
+  top: .4rem;
+  font-size: .6em;
+  visibility: hidden;
+  position: absolute;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: .2em 1.2em .2em 1.2em;
+  border-radius: .5em;
+  background-color: var(--prl);
+  box-shadow: 0 0 .5em .2em var(--shd); }
 
+.info div {
+  color: var(--gry);
+  background-color: var(--prl);
+  width: 1.2rem;
+  border: .05rem solid var(--gry);
+  height: 1rem;
+  font-size: .26em;
+  display: flex;
+  position: absolute;
+  top: 13.3rem;
+  left: 6.27rem; 
+  border-radius: .2rem;
+  align-items: flex-start;
+  padding-top: .08rem;
+  justify-content: center;
+  transform: rotate(90deg); }
 
+.info div:last-child { top: 14.65rem; }
+.info div::before { content: 'NEED 5'; }
+.info div:last-child::before { content: 'REMOVE'; }
 
 .anim200ms { transition: all .2s ease-out; }
 .anim500ms { transition: all .5s ease-out; }
@@ -329,7 +415,8 @@ body {
 <div class="rex">
 
   <div class="dicepad"></div>
-  <div class="card">
+  <div class="card xcolormixx xnumbermixx">
+    <div class="info"><div></div><div></div></div>
     <div class="score bar"></div>
     <div class="score bar"></div>
     <div class="score bar"></div>
@@ -337,7 +424,8 @@ body {
     <div class="penalty bar"></div>
     <div class="points bar"></div>
 
-  <div onclick="modal_to_reset(0);" class="tile svg_reset" style="top: 13.4em;"></div>
+  <div onclick="modal_to_reset(0);" class="tile svg_reset" style="top: 13.4em;">
+    <span style="font-size: 42%; color: #333;"></span></div>
 
   </div>
   <div class="dice_set"></div>
@@ -359,18 +447,18 @@ body {
   <div class="modal"></div>
 
   <div class="alert reset">
-    <div>
-      Clear the<br>Scorecard?
-      <br><br>
-      <span onclick="modal_to_reset(2);" class="ok">yes</span>
-      <br><br>
-      <span onclick="modal_to_reset(1);" class="no">no</span>
+    <div class="boards">Start a new game:</div>
+    <div class="boards">
+      <div><span onclick="modal_to_reset(2);">Classic<br>Board</span></div>
+      <div><span onclick="modal_to_reset(3);">Color<br>Mix</span></div>
+      <div><span onclick="modal_to_reset(4);">Number<br>Mix</span></div>
     </div>
+    <div class="boards"><span onclick="modal_to_reset(1);">cancel</span></div>
   </div>
 
-  <div class="alert exit" style="height: 2rem; top: .5rem;">
-    <div>Double tap BACK<br>to exit the app</div>
-  </div>
+
+
+  <div class="toast"></div>
 
 <script type = "text/javascript" >
 
@@ -380,13 +468,10 @@ function handleBackEvents() {
   window.history.pushState({}, '');
   window.addEventListener('popstate', () => {
 
-    $('.exit').style.visibility = 'visible';
+    toast(2000, 'Double tap BACK\r\nto exit the app');
 
     setTimeout(() => {
       window.history.pushState({}, '');
-
-      $('.exit').style.visibility = 'hidden';
-
     }, 2000);
   });
 }
@@ -414,16 +499,14 @@ function handleBackEvents() {
   const svg = new Map();
 
   svg.set('svg_scorecard',
-  `<svg viewBox='0 0 24 24' stroke='#222' stroke-linejoin='round' stroke-linecap='round'>
+  `<svg viewBox='0 0 24 24' stroke='#333' stroke-linejoin='round' stroke-linecap='round'>
     <path d='M5 13h5m-5 3h13M15 4.5h-12.5v15h18v-6M13 11v2h2l7-7-2-2zM18 6l2 2' fill='none'/>
   </svg>`);
 
   svg.set('svg_reset',
-  `<svg viewBox='0 0 24 24' stroke='#222' fill='none'>
-    <path id='a' d='M2 11l2 2 2-2m-2 1a8 8 0 018-8m0 0c.55 0 1.1.06 1.6.16a8
-      8 0 011.5.47 8 8 0 011.36.74 8 8 0 012.16 2.16' stroke-linecap='round'/>
+  `<svg viewBox='0 0 24 24' stroke='#333' stroke-linecap='round'>
+    <path id='a' d='M5.6 3.3v2.5h2.5M5.6 5.6A9 9 0 0120.9 13.6' fill='none'/>
     <g transform='rotate(180 12 12)'><use href='#a'/></g>
-    <g stroke-width='2'><path d='M9 15l6-6M9 9l6 6'/></g>
   </svg>`);
 
 
@@ -442,10 +525,36 @@ function handleBackEvents() {
 
   var undo = 1;
   var consume = 0;
+  var undone = -1;
+
+  var actions = [[0]];
+
+  const mix_c = [
+    [2,2,2,4,4,4,3,3,3,1,1],
+    [1,1,3,3,3,3,4,4,2,2,2],
+    [4,4,4,2,2,2,1,1,1,3,3],
+    [3,3,1,1,1,1,2,2,4,4,4] ];
+
+  const mix_n = [
+    [ 10,  6,  2,  8,  3,  4, 12,  5,  9,  7, 11],
+    [  9, 12,  4,  6,  7,  2,  5,  8, 11,  3, 10],
+    [  8,  2, 10, 12,  6,  9,  7,  4,  5, 11,  3],
+    [  5,  7, 11,  9, 12,  3,  8, 10,  2,  6,  4] ];
 
 
 
   window.onload = populate();
+
+
+
+  function toast(t, msg) {
+
+    let e = $('.toast');
+    e.style.visibility = 'visible';
+    e.innerText = msg;
+
+    setTimeout(() => { e.style.visibility = 'hidden'; }, t);
+  }
 
 
 
@@ -473,19 +582,25 @@ function handleBackEvents() {
     }
 
 
-    let s = $all('.score');
+    let s = $all('.score.bar');
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 12; j++) {
         s[i].appendChild(document.createElement('div'));
-        s[i].children[j].className = 'tile' + (j == 10 ? ' tile_off' : '');
-        s[i].children[j].setAttribute('onclick',`toggle_tile(${i}, ${j});`);
-        s[i].children[j].appendChild(document.createElement('span'));
-        s[i].children[j].children[0].appendChild(document.createElement('p'));
-        s[i].children[j].children[0].children[0].innerText = (i < 2 ? j + 2 : 12 - j);
+        s[i].children[j].className = 'mixxbg';
+
+        s[i].children[j].appendChild(document.createElement('div'));
+
+        s[i].children[j].children[0].className = 'tile' + (j == 10 ? ' tile_off' : '');
+        s[i].children[j].children[0].setAttribute('onclick',`toggle_tile(${i}, ${j});`);
+        s[i].children[j].children[0].appendChild(document.createElement('span'));
+        s[i].children[j].children[0].children[0].appendChild(document.createElement('p'));
+        s[i].children[j].children[0].children[0].children[0].innerText = (i < 2 ? j + 2 : 12 - j);
+        s[i].children[j].children[0].children[0].appendChild(document.createElement('p'));
+        s[i].children[j].children[0].children[0].children[1].innerText = (j < 11 ? mix_n[i][j] : 'X') ;
       }
-      s[i].children[11].className += ' lock';
-      s[i].children[11].children[0].children[0].innerText = 'X';
-      s[i].children[11].setAttribute('onclick',`toggle_lock(${i}, 0);`);
+      s[i].children[11].children[0].className += ' lock';
+      s[i].children[11].children[0].children[0].children[0].innerText = 'X';
+      s[i].children[11].children[0].setAttribute('onclick',`toggle_lock(${i}, 0);`);
     }
 
     let p = $('.penalty');
@@ -541,6 +656,7 @@ function handleBackEvents() {
     }
 
     $all('[class*="svg_"]').forEach(e => { svg_bg(e); });
+    show_undone();
 
   }
 
@@ -592,12 +708,13 @@ function handleBackEvents() {
 
     if (i > 0 && game_end) return;
     if (i < 0 && (dice_locked[4]) || dice_locked[-1 - i]) return;
+    if (i < 0 && source < 1 && actions[actions.length - 1].toString() != `2,${Math.abs(i + 1)}`) return;
 
     let d = $('.dice_set').children[1 + Math.abs(i)];
     d.children[(i > 0 ? 0 : 1)].style.display = 'none';
     d.children[(i > 0 ? 1 : 0)].style.display = 'flex';
 
-    if (source < 1) toggle_lock((Math.abs(i) - 1), 2);
+    if (source < 1) toggle_lock((Math.abs(i) - 1), 1);
 
   }
 
@@ -607,6 +724,30 @@ function handleBackEvents() {
     use_numerals = 1 - use_numerals;
     let d = $all('.numeral');
     d.forEach(i => { i.style.opacity = use_numerals; });
+  }
+
+
+
+  function undo_last() {
+
+    switch(actions[actions.length - 1][0]) {
+      case 1:
+        toggle_tile(actions[actions.length - 1][1], actions[actions.length - 1][2]);
+        break;
+      case 2:
+        toggle_lock(actions[actions.length - 1][1], 0);
+        break;
+      case 3:
+        toggle_penalty($('.penalty .tile'));
+        break;
+    }
+  }
+
+
+
+  function show_undone() {
+    undone++;
+    $('.svg_reset span').innerText = (undone > 99 ? '99+' : undone < 1 ? 'X' : undone);
   }
 
 
@@ -638,40 +779,49 @@ function handleBackEvents() {
 
   function toggle_tile(bar, tile) {
 
+    console.log(`action: clicked on color ${($('.colormixx') ? mix_c[bar][tile] : bar + 1)
+      }, number ${($('.numbermixx') ? mix_n[bar][tile] : bar < 2 ? tile + 2 : 12 - tile)}`); 
+
     if (dice_locked[4]) return;
 
-    let b = $('.card').children[bar];
-    let t = b.children[tile].classList;
+    let b = $('.card').children[bar + 1];
+    let t = b.children[tile].children[0].classList;
 
     if (b.classList.contains('locked_bar') && (tile < 10 || !t.contains('tile_sel'))) return;
     if (t.contains('tile_off')) return;
     if (t.contains('tile_sel') && undo < 1) return;
 
-    if (tile > 9) { dice_locked[bar] = !dice_locked[bar]; toggle_lock(bar, 1); }
+    if (t.contains('tile_sel')) { console.log(`try: unselect (${bar}, ${tile})`);
 
-    if (t.contains('tile_sel')) {
+      if (actions[actions.length - 1].toString() != `1,${bar},${tile}`) { console.log(`not last actionn`);
+      } else { actions.splice(-1);
 
-      t.remove('tile_sel'); undo -= consume;
+      if (tile > 9) { dice_locked[bar] = !dice_locked[bar]; toggle_lock(bar, 2); }
 
-      while (tile > 0) {
-        tile--; b.children[tile].classList.remove('tile_off');
-        if (b.children[tile].classList.contains('tile_sel')) tile = 0;
+        t.remove('tile_sel'); undo -= consume; show_undone();
+
+        while (tile > 0) {
+          tile--; b.children[tile].children[0].classList.remove('tile_off');
+          if (b.children[tile].children[0].classList.contains('tile_sel')) tile = 0;
+        }
+
+        if (b.querySelectorAll('.tile_sel').length < 5) {
+          b.children[10].children[0].classList.add('tile_off');
+        }
       }
+    } else { console.log(`select (${bar}, ${tile})`); actions[actions.length] = [1, bar, tile];
 
-      if (b.querySelectorAll('.tile_sel').length < 5) {
-        b.children[10].classList.add('tile_off');
-      }
-    } else {
+      if (tile > 9) { dice_locked[bar] = !dice_locked[bar]; toggle_lock(bar, 2); }
 
       t.add('tile_sel');
 
       while (tile > 0) {
-        tile--; b.children[tile].classList.add('tile_off');
-        if (b.children[tile].classList.contains('tile_sel')) tile = 0;
+        tile--; b.children[tile].children[0].classList.add('tile_off');
+        if (b.children[tile].children[0].classList.contains('tile_sel')) tile = 0;
       }
 
       if (b.querySelectorAll('.tile_sel').length > 4) {
-        b.children[10].classList.remove('tile_off');
+        b.children[10].children[0].classList.remove('tile_off');
       }
     }
 
@@ -680,36 +830,43 @@ function handleBackEvents() {
 
 
 
-  function toggle_lock(bar, source) {
+  function toggle_lock(bar, source) { console.log(`action: color ${bar} lock`);
 
     let c = $('.card');
-    let s = c.children[bar].children[11].classList;
+    let s = c.children[bar + 1].children[11].children[0].classList;
 
-    if (c.children[bar].classList.contains('locked_bar') && !s.contains('tile_off')) return;
-    if (s.contains('tile_off') && undo < 1 && source < 2) return;
+    if (c.children[bar + 1].classList.contains('locked_bar') && !s.contains('tile_off')) return;
+    if (s.contains('tile_off') && undo < 1 && source != 1) return;
     if (s.contains('tile_sel') && !source) return;
 
-    if (s.contains('tile_off')) {
+    if (s.contains('tile_off')) { console.log(`try: color ${bar} restore`);
 
-      s.remove('tile_off', 'tile_sel');
+      if (actions[actions.length - 1].toString() != `2,${bar}` && source != 2) { console.log(`not last action`);
+      } else {
+        if (source != 1) in_out(-1 - bar, 1);
+        if (source != 2) actions.splice(-1);
 
-      game_end = 0; if (!source) undo -= consume;
-      if (source < 2) in_out(-1 - bar, 1);
+        s.remove('tile_off', 'tile_sel');
 
-      for (let j = 0; j < 5; j++) {
-        if (!c.children[j].lastChild.classList.contains('tile_off')) {
-          c.children[j].classList.remove('locked_bar');
+        game_end = 0; //if (!source) { undo -= consume; show_undone() }
+
+        for (let j = 0; j < 5; j++) {
+          if (!c.children[j + 1].lastChild.children[0].classList.contains('tile_off')) {
+            c.children[j + 1].classList.remove('locked_bar');
+          }
         }
       }
-    } else {
+    } else { if (source < 2) actions[actions.length] = [2, bar];
 
-      s.add('tile_off'); if (source == 1) s.add('tile_sel');
-      if (source < 2) in_out(bar + 1, 1);
-      c.children[bar].classList.add('locked_bar');
+      console.log(`color ${bar} remove by ${(source < 1 ? 'lock' : source < 2 ? 'dice' : 'selection')}`);
+
+      s.add('tile_off'); if (source > 1) s.add('tile_sel');
+      if (source != 1) in_out(bar + 1, 1);
+      c.children[bar + 1].classList.add('locked_bar');
 
       if ($all('.locked_bar').length > 1) {
         game_end = 1;
-        for (let j = 0; j < 5; j++) c.children[j].classList.add('locked_bar');
+        for (let j = 0; j < 5; j++) c.children[j + 1].classList.add('locked_bar');
       }
     }
 
@@ -718,7 +875,7 @@ function handleBackEvents() {
 
 
 
-  function toggle_penalty(e) {
+  function toggle_penalty(e) { console.log(`action: clicked on penalty meter`);
 
     let b = $all('.score', '.penalty');
     let p = $('.penalty');
@@ -726,18 +883,22 @@ function handleBackEvents() {
     if (p.classList.contains('locked_bar')) return;
     if (e.classList.contains('tile_sel') && undo < 1) return;
 
-    if (e.classList.contains('tile_sel')) {
+    if (e.classList.contains('tile_sel')) { console.log(`try: unselect penalty`);
 
-      penalties--;
-      p.children[penalties].classList.remove('tile_sel');
-      dice_locked[4] = game_end = 0; undo -= consume;
+      if (actions[actions.length - 1][0] != 3) { console.log(`not last action`);
+      } else { actions.splice(-1);
 
-      for (let j = 0; j < 4; j++) {
-        if (!b[j].lastChild.classList.contains('tile_off')) {
-          b[j].classList.remove('locked_bar');
+        penalties--;
+        p.children[penalties].classList.remove('tile_sel');
+        dice_locked[4] = game_end = 0; undo -= consume; show_undone()
+
+        for (let j = 0; j < 4; j++) {
+          if (!b[j].lastChild.children[0].classList.contains('tile_off')) {
+            b[j].classList.remove('locked_bar');
+          }
         }
       }
-    } else {
+    } else { console.log(`select penalty`); actions[actions.length] = [3];
 
       p.children[penalties].classList.add('tile_sel');
       penalties++;
@@ -864,13 +1025,18 @@ function handleBackEvents() {
   }
 
 
-  function modal_to_reset(i) { console.log(i);
+  function modal_to_reset(i) {
 
     if (i < 1) {
       $all('.modal, .reset').forEach(e => { e.style.visibility = 'visible'; });
     } else {
       $all('.modal, .reset').forEach(e => { e.style.visibility = 'hidden'; });
-      if (i > 1) clear_game();
+      if (i > 1) {
+        clear_game();
+        $('.card').classList.remove('colormixx', 'numbermixx');
+        if (i == 3) $('.card').classList.add('colormixx');
+        if (i == 4) $('.card').classList.add('numbermixx');
+      }
     }
   }
 
@@ -879,16 +1045,18 @@ function handleBackEvents() {
 
     penalties = 0;
     game_end = 0;
+    actions = [[0]];
     for (let i = 0; i < 5; i++) dice_locked[i] = 0;
 
     let c = $all('.locked_bar, .tile_sel, .tile_off');
     c.forEach(e => { e.classList.remove('locked_bar', 'tile_sel', 'tile_off'); });
-    $all('.score').forEach(e => { e.children[10].classList.add('tile_off'); });
+    $all('.score').forEach(e => { e.children[10].children[0].classList.add('tile_off'); });
 
     $all('.dice:nth-child(1)').forEach(e => { e.style.display = 'flex'; });
     $all('.dice:nth-child(2)').forEach(e => { e.style.display = 'none'; });
 
     update_points();
+    undone = -1; show_undone();
 
   }
 
