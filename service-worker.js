@@ -3,6 +3,8 @@ var CACHE_NAME = 'static-cache';
 var urlsToCache = [
   './',
   './icon192.png',
+  './qstyle.css',
+  './qscript.js',
   './Roboto-Black.ttf',
   './Verdana-Bold.ttf',
 ];
