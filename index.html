@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="./icon192.png">
 <link rel="apple-touch-icon" href="./icon192.png">
 
-<link rel="stylesheet" href="qstyle.css">
+<link rel="stylesheet" href="./qstyle.css">
 <link rel="manifest" href="./qdice.webmanifest"/>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -18,7 +18,7 @@
 <div class="rex">
 
   <div class="dicepad"></div>
-  <div class="card xcolormixx xnumbermixx">
+  <div class="card">
     <div class="info"><div></div><div></div></div>
     <div class="score bar"></div>
     <div class="score bar"></div>
@@ -27,8 +27,7 @@
     <div class="penalty bar"></div>
     <div class="points bar"></div>
 
-  <div onclick="modal_to_reset(0);" class="tile svg_reset" style="top: 13.4em;">
-    <span style="font-size: 42%; color: #333;"></span></div>
+  <div onclick="modal_to_reset(0);" class="tile svg_reset"><span></span></div>
 
   </div>
   <div class="dice_set"></div>
@@ -43,7 +42,7 @@
     <div class="bigbutton text2">R</div>
   </div>
 
-  <div onclick="toggle_scorecard();" class="tile svg_scorecard" style="top: 14.6em; color: white;"></div>
+  <div onclick="toggle_scorecard();" class="tile svg_scorecard"></div>
 
 </div>
 
@@ -61,7 +60,7 @@
 
   <div class="toast"></div>
 
-<script type="text/javascript" src="qscript.js"></script>
+<script type="text/javascript" src="./qscript.js"></script>
 
 </body>
 </html>

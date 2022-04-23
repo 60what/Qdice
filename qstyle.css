@@ -36,6 +36,10 @@ body {
   font-family: 'Roboto-Black', sans-serif;
   background-image: repeating-linear-gradient(-45deg, var(--oat) 0 8%, var(--tan) 0 50%); }
 
+.landscape .rex { transform: rotate(-90deg); }
+
+.landscape .dice, .landscape .bigbutton, .landscape .tile { transform: rotate(90deg); }
+
 .rex {
   width: 9em;
   height: 16em;
@@ -43,24 +47,27 @@ body {
 
 .dicepad {
   width: 7em;
+  margin: 1em;
   height: 10em;
   position: absolute;
-  margin: 1em 0 0 1em;
-  border-radius: .33em;
+  border-radius: .5em;
   transition: opacity .5s;
   background-color: var(--drk);
-  box-shadow: 0 0 .4em .05em var(--shd);
-  xbox-shadow: 0 0 .4em -.02em black; }
+  box-shadow: 0 0 .4em .05em var(--shd); }
+
+.card_out .dicepad { opacity: 0; }
 
 .card {
   opacity: 0;
+  width: 9em;
+  height: 16em;
+  right: 50vmin;
   color: var(--fog);
   position: absolute;
-  width: 9em; height: 16em;
-  background-color: currentColor;
-  right: 50vmin; margin-right: 4.5em; }
+  margin-right: 4.5em;
+  background-color: currentColor; }
 
-.card.card_out { right: 0; margin-right: 0; opacity: 1; }
+.card_out .card { right: 0; margin-right: 0; opacity: 1; }
 
 .bar { position: absolute; width: 1.4em; }
 
@@ -119,9 +126,9 @@ body {
 .score .tile { margin: 0; background-color: var(--fog); }
 .score .tile_off        { background-color: var(--mst); }
 
-.score .tile_sel { background-color: white !important; }
-.score .tile_sel span { background-color: currentColor; }
-.score .tile_sel span p { color: white !important; }
+.score .tile_on { background-color: white !important; }
+.score .tile_on span { background-color: currentColor; }
+.score .tile_on span p { color: white !important; }
 
 .score .tile p:last-child { display: none; }
 .numbermixx .score .tile p { display: none; }
@@ -132,13 +139,13 @@ body {
 
 .score.locked_bar .tile          { background-color: var(--mst); }
 .score.locked_bar .lock.tile_off { background-color: var(--fog); }
-.score.locked_bar .tile_sel                       { opacity: .7; }
-.score.locked_bar .mixxbg:nth-child(11) .tile_sel { opacity:  1; }
+.score.locked_bar .tile_on                       { opacity: .7; }
+.score.locked_bar .mixxbg:nth-child(11) .tile_on { opacity:  1; }
 .score.locked_bar .lock span p { opacity: 1; }
 
 .penalty { top: 8em; }
 .penalty .tile { color: var(--gry); background-color: currentColor; }
-.penalty .tile_sel { color: var(--drk); }
+.penalty .tile_on { color: var(--drk); }
 .penalty .tile span { background-color: var(--prl); font-size: 38%; }
 .penalty .tile span::before { content: 'PASS'; }
 
@@ -150,11 +157,17 @@ body {
 .points .tile:nth-child(4) { color: var(--blu); }
 .points .tile:nth-child(5) { color: var(--gry); }
 
+.points .tile:nth-child(-n + 4) span::before { content: '+\00a0'; }
+.points .tile:nth-child(5) span::before { content: '-\00a0'; }
+.points .tile:nth-child(6) div::before { content: 'TOTAL'; }
+
 .points .tile:nth-child(6) {
   top: .1em;
   opacity: 0;
   align-items: flex-end;
   transition: opacity .5s; }
+
+.points .tile.tile_on { opacity: 1; }
 
 .points .tile span {
   width: 2.2em;
@@ -170,12 +183,8 @@ body {
   width: 100%;
   height: 100%;
   font-size: 35%;
-  position:absolute;
+  position: absolute;
   text-align: center; }
-
-.points .tile:nth-child(-n + 4) span::before { content: '+\00a0'; }
-.points .tile:nth-child(5) span::before { content: '-\00a0'; }
-.points .tile:nth-child(6) div::before { content: 'TOTAL'; }
 
 
 
@@ -212,11 +221,11 @@ body {
 .roll .bigbutton { left: 6.083rem; }
 .roll { opacity: .3; }
 
-.bigbutton.card_out { font-size: .55em; top: 11.3rem; left: 8rem; }
-.roll .bigbutton.card_out { top: 9.7rem; }
+.card_out .bigbutton { font-size: .55em; top: 11.3rem; left: 8rem; }
+.card_out .roll .bigbutton { top: 9.7rem; }
 
-.bigbutton.text1.card_out div { opacity: 0; }
-.bigbutton.text2.card_out { font-size: 1.05rem; height: 1.375rem; }
+.card_out .bigbutton.text1 div { opacity: 0; }
+.card_out .bigbutton.text2 { font-size: 1.05rem; height: 1.375rem; }
 
 
 
@@ -231,11 +240,10 @@ body {
 .cube:nth-child(6) { top: 8rem; color: var(--blu); }
 .cube:nth-child(even) { left: 5rem; }
 
-.cube.card_out { left: 7.39rem; font-size: .6em; }
-.cube.card_out:nth-child(1) { top:  .5rem; }
-.cube.card_out:nth-child(3) { top: 3.5rem; }
-.cube.card_out:nth-child(5) { top: 6.5rem; }
-
+.card_out .cube { left: 7.39rem; font-size: .6em; }
+.card_out .cube:nth-child(1) { top:  .5rem; }
+.card_out .cube:nth-child(3) { top: 3.5rem; }
+.card_out .cube:nth-child(5) { top: 6.5rem; }
 
 .dice {
   top: 0;
@@ -254,8 +262,8 @@ body {
 .dice:nth-child(1) { box-shadow: 0 0 .4em -.05em var(--shd); }
 .dice:nth-child(2) { opacity: .3; display: none; }
 
-.pip, .numeral p { color: black; }
-.cube:nth-child(n + 3) .pip, .cube:nth-child(n + 3) .numeral p { color: white; }
+.pip, .dice p { color: black; }
+.cube:nth-child(n + 3) .pip, .cube:nth-child(n + 3) .dice p { color: white; }
 
 .pip {
   top: 41%;
@@ -273,7 +281,7 @@ body {
 .pip.left   { left: 18%; }
 .pip.right  { left: 64%; }
 
-.numeral {
+.dice span {
   opacity: 0;
   width: 68%;
   height: 68%;
@@ -284,6 +292,8 @@ body {
   justify-content: center;
   transition: opacity .5s;
   background-color: currentColor; }
+
+.numerals .dice span { opacity: 1; }
 
 
 
@@ -380,6 +390,12 @@ body {
 .info div:last-child { top: 14.65rem; }
 .info div::before { content: 'NEED 5'; }
 .info div:last-child::before { content: 'REMOVE'; }
+
+.svg_scorecard { top: 14.6em; color: var(--drk); }
+.svg_scorecard svg { stroke: currentColor; }
+
+.svg_reset { top: 13.4em; color: var(--drk); }
+.svg_reset span { font-size: 42%; } 
 
 .anim200ms { transition: all .2s ease-out; }
 .anim500ms { transition: all .5s ease-out; }
