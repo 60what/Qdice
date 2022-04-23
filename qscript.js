@@ -512,7 +512,7 @@ function handleBackEvents() {
 	window.history.pushState({}, '');
 	window.addEventListener('popstate', () => {
 
-		simpleToast(2000, 'Double tap BACK\r\nto exit the app');
+		simpleToast(2000, 'Double tap BACK\r\nto exit the app v3');
 
 		setTimeout(() => {
 			window.history.pushState({}, '');

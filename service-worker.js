@@ -1,4 +1,4 @@
-const versionNumber = 1.45645;
+const versionNumber = 2.45645;
 
 var CACHE_NAME = 'static-cache';
 var urlsToCache = [
