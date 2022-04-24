@@ -1,16 +1,33 @@
 
 const CACHE_NAME = 'QdiceOfflineCache';
 
+var cacheWhenInstalled = [
+	'./',
+	'./icon192.png',
+	'./icon512.png',
+	'./icon230.png',
+	'./qstyle.css',
+	'./qscript.js',
+	'./Roboto-Black.ttf',
+	'./Verdana-Bold.ttf',
+];
+
+self.addEventListener('install', (event) => {
+	
+	event.waitUntil(caches.open(CACHE_NAME).then((cache) => {
+		return cache.addAll(cacheWhenInstalled);
+	}));
+});
+
 self.addEventListener('fetch', (event) => {
 
-	// Open the cache
     event.respondWith(caches.open(CACHE_NAME).then((cache) => {
-		// Go to the network first
+		// check online first
 		return fetch(event.request.url).then((fetchedResponse) => {
 			cache.put(event.request, fetchedResponse.clone());
 			return fetchedResponse;
 		}).catch(() => {
-			// If the network is unavailable, get
+			// but if offline, use cache
 			return cache.match(event.request.url);
 		});
     }));
