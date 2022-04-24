@@ -1,48 +1,22 @@
-const versionNumber = 2.45645;
 
-var CACHE_NAME = 'static-cache';
-var urlsToCache = [
-	'./',
-	'./icon192.png',
-	'./qstyle.css',
-	'./qscript.js',
-	'./Roboto-Black.ttf',
-	'./Verdana-Bold.ttf',
-];
+const cacheName = 'MyFancyCacheName_v1';
 
-self.addEventListener('install', function(event) {
-	event.waitUntil(
-		caches.open(CACHE_NAME)
-		.then(function(cache) {
-			return cache.addAll(urlsToCache);
-		})
-	);
+self.addEventListener('fetch', (event) => {
+  // Check if this is a navigation request
+  if (event.request.mode === 'navigate') {
+    // Open the cache
+    event.respondWith(caches.open(cacheName).then((cache) => {
+      // Go to the network first
+      return fetch(event.request.url).then((fetchedResponse) => {
+        cache.put(event.request, fetchedResponse.clone());
+
+        return fetchedResponse;
+      }).catch(() => {
+        // If the network is unavailable, get
+        return cache.match(event.request.url);
+      });
+    }));
+  } else {
+    return;
+  }
 });
-
-self.addEventListener('fetch', function(event) {
-	event.respondWith(
-		caches.match(event.request)
-		.then(function(response) {
-			return response || fetchAndCache(event.request);
-		})
-	);
-});
-
-function fetchAndCache(url) {
-	return fetch(url)
-	.then(function(response) {
-		// Check if we received a valid response
-		if (!response.ok) {
-			throw Error(response.statusText);
-		}
-		return caches.open(CACHE_NAME)
-		.then(function(cache) {
-			cache.put(url, response.clone());
-			return response;
-		});
-	})
-	.catch(function(error) {
-    console.log('Request failed:', error);
-    // You could return a custom offline 404 page here
-	});
-}
