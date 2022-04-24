@@ -2,7 +2,7 @@
 const CACHE_NAME = 'QdiceOfflineCache';
 
 var cacheWhenRegistered = [
-	'./',
+	'./index.html?user_mode=app',
 	'./qstyle.css',
 	'./qscript.js',
 	'./Roboto-Black.ttf',
