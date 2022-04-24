@@ -3,13 +3,14 @@ const CACHE_NAME = 'QdiceOfflineCache';
 
 var cacheWhenRegistered = [
 	'./',
-	'./icon192.png',
-	'./icon512.png',
-	'./icon230.png',
 	'./qstyle.css',
 	'./qscript.js',
 	'./Roboto-Black.ttf',
 	'./Verdana-Bold.ttf',
+	'./icon192.png',
+	'./qdice.webmanifest',
+	'./icon512.png',
+	'./icon230.png',
 ];
 
 self.addEventListener('install', (event) => {
