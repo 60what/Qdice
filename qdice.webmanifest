@@ -8,7 +8,7 @@
       "purpose": "any"
     },
     { 
-      "src": "./icon230.png",
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOYAAADmCAMAAAD2tAmJAAAAV1BMVEX///8iiETuzDPMMyIzVbsiOHwWWCyHHheujg7o7PefsN9qg839+urm8ur56eaZyKn356HmnpZfqXfy2mnaaV3R2PDI0e3M5NT68s3D3szzzsr68cjwxsGcamL2AAAC9UlEQVR42u3cyW4bMRBF0XJmWYNtSZ79/9+ZDdEk/AzEBJ7SpOverTqLg06TRQnuICIiIiIiIiIiIiIiIkrfb0fxUX8cuZDfHS3QFvnNkQVakIbeOwvSAR1IuTirchxnDmZROp1VOY4TJkyYMGHChAkT5qc7vxzi8HLuZp6edrF7Ok3CvCv/9q6TeVs+uZ2CWZTiVKYqi3MC5jlq5w7mKWqn8ZlvUXvrYL5G7XV85iFqhw7mLmq78ZnR1sGMtvGZSe5mkmczyUqbZN/MMgVlmWmznFBgwhydWVYcF1PXpCGYy/7hYuoOMwBTpgEDU+aF1Zky2zmYOv2tyNRJ3cXUWX5Fpp67XEw9ma3NjDYbU8/Z3E2eTVZa9s3EU1CWmTbLCQUmzNGZy4rjZ/avSX6m7h9+Zv8O42fqNOBn9s8LfqbOdn5m//TnZ+qk7mf2z/J+pp67/Mz+k5mfGW3/mRlt3E2eTVbajPtmlikoy0yb5YQCEyZMmDBhwoSZgJnkL+WzMJO8xSLLO0myvGGGiIiIiL50vxzFR/105EJeOVqgLfKHIwu0IA29dxakAzqQcnFW5TjOHMyidDqrchwnTJgwYcKECRMmzNLxcR/7x+MFmNv7TWzut/qBXHF55k355MbOvC6fXKtCrvAzVVmcFqYaqqLjCjPzGLWjlbmNmvyv1Csuy3yO2rOV+RC1ByHKFZdl7qO2tzI3UdsIUa64LDParMxoE6Jcwd3k2WSlzbhvZpmCssy0WU4oMGHOzyxrkoupK84QzGWHcTF1/xiAKfOCgSnTwOpMmf4cTJ3tVmTqLO9i6qS+IlNPZi6mnrvWZkabjamnaO4mzyYrLftm4ikoy0yb5YQCE+b8zLImffFv9pYdZurvaTvmhYm/de+a/qb9DeWqa5af9Rex0mdPZrP+vvnvom3WX6u5m7mezSQrbZJ9M8sUlGWmzXJCgQkTJkyYMGHCnJ6Z5C/lszCTvMUiyztJsrxhhoiIiIiIiIiIiIiIiIiG7y/Z4Aus/aNr2AAAAABJRU5ErkJggg==",
       "sizes": "230x230",
       "type": "image/png",
       "purpose": "maskable"
