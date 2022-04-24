@@ -8,6 +8,7 @@ var cacheWhenRegistered = [
 	'./Roboto-Black.ttf',
 	'./Verdana-Bold.ttf',
 	'./icon192.png',
+	'./qdice.webmanifest',
 ];
 
 self.addEventListener('install', (event) => {
