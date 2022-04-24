@@ -3,7 +3,7 @@ const cacheName = 'MyFancyCacheName_v1';
 
 self.addEventListener('fetch', (event) => {
   // Check if this is a navigation request
-  if (event.request.mode === 'navigate') {
+  if (event.request.mode === 'navigate' || true) {
     // Open the cache
     event.respondWith(caches.open(cacheName).then((cache) => {
       // Go to the network first
