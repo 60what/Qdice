@@ -1,7 +1,7 @@
 
 const CACHE_NAME = 'QdiceOfflineCache';
 
-var cacheWhenInstalled = [
+var cacheWhenRegistered = [
 	'./',
 	'./icon192.png',
 	'./icon512.png',
@@ -15,7 +15,7 @@ var cacheWhenInstalled = [
 self.addEventListener('install', (event) => {
 	
 	event.waitUntil(caches.open(CACHE_NAME).then((cache) => {
-		return cache.addAll(cacheWhenInstalled);
+		return cache.addAll(cacheWhenRegistered);
 	}));
 });
 
