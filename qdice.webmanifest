@@ -15,7 +15,7 @@
 		}
 	],
 	"background_color": "#eee",
-	"theme_color": "red";
+	"theme_color": "red",
 	"start_url": "./index.html?user_mode=app",
 	"display": "standalone"
 }
