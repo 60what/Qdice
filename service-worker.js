@@ -7,7 +7,7 @@ var cacheWhenRegistered = [
 	'./qscript.js',
 	'./Roboto-Black.ttf',
 	'./Verdana-Bold.ttf',
-	'./icon192.png',
+	'./icon160.png',
 	'./qdice.webmanifest',
 ];
 
