@@ -16,6 +16,5 @@
 	],
 	"background_color": "#eee",
 	"start_url": "./index.html?user_mode=app",
-	"display": "standalone",
-	"scope": "./"
+	"display": "standalone"
 }
