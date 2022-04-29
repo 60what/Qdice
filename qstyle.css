@@ -334,7 +334,7 @@ body {
 .boards span { border-radius: .5em; border: .1em solid var(--drk); background-color: white;
   height: 4.8em; width: 4.8em; display: flex; align-items: center; justify-content: center;}
 
-.alert .boards:nth-child(3) { width: 7.5rem; align-items: flex-end; justify-content: flex-end; }
+.alert .boards:nth-child(3) { width: 7.5rem; align-items: flex-end; xjustify-content: flex-end; }
 
 .alert .boards:nth-child(3) span { height: 2em; width: 4em; }
 
