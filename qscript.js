@@ -109,9 +109,9 @@ function populate() {
 
     if (pwa) handleBackEvents(); //------------------------------------------------------------------------------------
 
-    let s = $all('.score');
-    for (let i = 0; i < 4; i++) {					// there are 4 score bar areas on the card
-      for (let j = 0; j < 12; j++) {				// add 12 clickable tiles in each bar
+    let s = $all('.scoring .stripe');
+    for (let i = 0; i < 4; i++) {					// there are 4 stripes on the card for scoring
+      for (let j = 0; j < 12; j++) {				// add 12 clickable tiles in each stripe
 		  let gen1 = spawn(s[i], 'div', 'mixxbg');	// div(mixxbg) > div(tile) > span > p + p
 		  let classes = 'tile' + (j == 10 ? ' tile_off' : j == 11 ? ' lock' : '');
 		  let click = (j < 11 ? `toggle_tile(${i}, ${j});` : `toggle_lock(${i}, 0);`);
@@ -121,9 +121,8 @@ function populate() {
       }
     }
 
-    for (let i = 0; i < 4; i++) {					// add 4 clickable tiles in the penalty area
-		let penaltyBox = spawn($('.penalty'), 'div', 'tile', '', 'toggle_penalty(this);');
-		spawn(spawn(penaltyBox, 'span'), 'p');		// div(tile) > span > p
+    for (let i = 0; i < 4; i++) {					// add 4 clickable tiles (+span) in the penalty area
+		spawn(spawn($('.penalty'), 'div', 'tile', '', 'toggle_penalty(this);'), 'span');
     }
 
     for (let i = 0; i < 6; i++) {					// add 6 tiles in the points area
@@ -181,7 +180,7 @@ function toggle_scorecard() {
 	removeAnimations();
     // elements that change location
     $all('.card, .cube, .bigbutton').forEach(e => { e.classList.add('anim500ms'); });
-    scorecard = hasButOnlyIf($('.rex'), 'card_out', !scorecard);
+    scorecard = hasButOnlyIf($('.rex'), 'cardOut', !scorecard);
 }
 
 function undo_last() {
@@ -200,8 +199,7 @@ function undo_last() {
 }
 
 function update_undone() {
-	undone++;
-	$('.svg_reset span').innerText = (undone > 99 ? '99+' : undone < 1 ? 'X' : undone); // doc edit
+	$('.svg_reset span').innerText = (undone++ > 99 ? '99+' : undone < 1 ? 'X' : undone); // doc edit
 }
 
 
@@ -228,26 +226,26 @@ function toggle_faces() {
     if (source < 1) toggle_lock((Math.abs(i) - 1), 1);
   }
 
-  function toggle_tile(bar, tile) {
+  function toggle_tile(stripe, tile) {
 
-    console.log(`action: clicked on color ${($('.colormixx') ? mix_c[bar][tile] : bar + 1)
-      }, number ${($('.numbermixx') ? mix_n[bar][tile] : bar < 2 ? tile + 2 : 12 - tile)}`); 
+    console.log(`action: clicked on color ${($('.colormixx') ? mix_c[stripe][tile] : stripe)
+      }, number ${($('.numbermixx') ? mix_n[stripe][tile] : stripe < 2 ? tile + 2 : 12 - tile)}`); 
 
     if (dice_locked[4]) return;
 
-    let b = $('.card').children[bar + 1];
+    let b = $('.scoring').children[stripe];
     let t = b.children[tile].children[0].classList;
 
-    if (b.classList.contains('locked_bar') && (tile < 10 || !t.contains('tile_on'))) return;
+    if (b.classList.contains('locked_stripe') && (tile < 10 || !t.contains('tile_on'))) return;
     if (t.contains('tile_off')) return;
     if (t.contains('tile_on') && undo < 1) return;
 
-    if (t.contains('tile_on')) { console.log(`try: unselect (${bar}, ${tile})`);
+    if (t.contains('tile_on')) { console.log(`try: unselect (${stripe}, ${tile})`);
 
-      if (actions[actions.length - 1].toString() != `1,${bar},${tile}`) { console.log(`not last actionn`);
+      if (actions[actions.length - 1].toString() != `1,${stripe},${tile}`) { console.log(`not last actionn`);
       } else { actions.splice(-1);
 
-      if (tile > 9) { dice_locked[bar] = !dice_locked[bar]; toggle_lock(bar, 2); }
+      if (tile > 9) { dice_locked[stripe] = !dice_locked[stripe]; toggle_lock(stripe, 2); }
 
         t.remove('tile_on'); undo -= consume; update_undone();
 
@@ -260,9 +258,9 @@ function toggle_faces() {
           b.children[10].children[0].classList.add('tile_off');
         }
       }
-    } else { console.log(`select (${bar}, ${tile})`); actions.push([1, bar, tile]);
+    } else { console.log(`select (${stripe}, ${tile})`); actions.push([1, stripe, tile]);
 
-      if (tile > 9) { dice_locked[bar] = !dice_locked[bar]; toggle_lock(bar, 2); }
+      if (tile > 9) { dice_locked[stripe] = !dice_locked[stripe]; toggle_lock(stripe, 2); }
 
       t.add('tile_on');
 
@@ -281,20 +279,20 @@ function toggle_faces() {
 
 
 
-  function toggle_lock(bar, source) { console.log(`action: color ${bar} lock`);
+  function toggle_lock(stripe, source) { console.log(`action: color ${stripe} lock`);
 
-    let c = $('.card');
-    let s = c.children[bar + 1].children[11].children[0].classList;
+    let c = $all('.scoring .stripe, .penalty');
+    let s = c[stripe].children[11].children[0].classList;
 
-    if (c.children[bar + 1].classList.contains('locked_bar') && !s.contains('tile_off')) return;
+    if (c[stripe].classList.contains('locked_stripe') && !s.contains('tile_off')) return;
     if (s.contains('tile_off') && undo < 1 && source != 1) return;
     if (s.contains('tile_on') && !source) return;
 
-    if (s.contains('tile_off')) { console.log(`try: color ${bar} restore`);
+    if (s.contains('tile_off')) { console.log(`try: color ${stripe} restore`);
 
-      if (actions[actions.length - 1].toString() != `2,${bar}` && source != 2) { console.log(`not last action`);
+      if (actions[actions.length - 1].toString() != `2,${stripe}` && source != 2) { console.log(`not last action`);
       } else {
-        if (source != 1) in_out(-1 - bar, 1);
+        if (source != 1) in_out(-1 - stripe, 1);
         if (source != 2) actions.splice(-1);
 
         s.remove('tile_off', 'tile_on');
@@ -302,22 +300,22 @@ function toggle_faces() {
         game_end = false; //if (!source) { undo -= consume; update_undone() }
 
         for (let j = 0; j < 5; j++) {
-          if (!c.children[j + 1].lastChild.children[0].classList.contains('tile_off')) {
-            c.children[j + 1].classList.remove('locked_bar');
+          if (!c[j].lastChild.children[0].classList.contains('tile_off')) {
+            c[j].classList.remove('locked_stripe');
           }
         }
       }
-    } else { if (source < 2) actions.push([2, bar]);
+    } else { if (source < 2) actions.push([2, stripe]);
 
-      console.log(`color ${bar} remove by ${(source < 1 ? 'lock' : source < 2 ? 'dice' : 'selection')}`);
+      console.log(`color ${stripe} remove by ${(source < 1 ? 'lock' : source < 2 ? 'dice' : 'selection')}`);
 
       s.add('tile_off'); if (source > 1) s.add('tile_on');
-      if (source != 1) in_out(bar + 1, 1);
-      c.children[bar + 1].classList.add('locked_bar');
+      if (source != 1) in_out(stripe + 1, 1);
+      c[stripe].classList.add('locked_stripe');
 
-      if ($all('.locked_bar').length > 1) {
+      if ($all('.locked_stripe').length > 1) {
         game_end = true;
-        for (let j = 0; j < 5; j++) c.children[j + 1].classList.add('locked_bar');
+        for (let j = 0; j < 5; j++) c[j].classList.add('locked_stripe');
       }
     }
 
@@ -328,10 +326,10 @@ function toggle_faces() {
 
   function toggle_penalty(e) { console.log(`action: clicked on penalty meter`);
 
-    let b = $all('.score', '.penalty');
+    let b = $all('.scoring .stripe', '.penalty');
     let p = $('.penalty');
 
-    if (p.classList.contains('locked_bar')) return;
+    if (p.classList.contains('locked_stripe')) return;
     if (e.classList.contains('tile_on') && undo < 1) return;
 
     if (e.classList.contains('tile_on')) { console.log(`try: unselect penalty`);
@@ -345,7 +343,7 @@ function toggle_faces() {
 
         for (let j = 0; j < 4; j++) {
           if (!b[j].lastChild.children[0].classList.contains('tile_off')) {
-            b[j].classList.remove('locked_bar');
+            b[j].classList.remove('locked_stripe');
           }
         }
       }
@@ -356,7 +354,7 @@ function toggle_faces() {
 
       if (penalties > 3) {
         dice_locked[4] = game_end = true;
-        for (let j = 0; j < 4; j++) b[j].classList.add('locked_bar');
+        for (let j = 0; j < 4; j++) b[j].classList.add('locked_stripe');
       }
     }
 
@@ -366,14 +364,14 @@ function toggle_faces() {
 
 
 function update_points() {
-	let colorBar = $all('.score');
+	let scoringStripe = $all('.scoring .stripe');
 	let points = $all('.points .tile span');
 
 	let total = -5 * penalties;
 	points[4].textContent = -1 * total; // doc edit
 
 	for (let i = 0; i < 4; i++) {
-		let j = colorBar[i].querySelectorAll('.tile_on').length; // dirty
+		let j = scoringStripe[i].querySelectorAll('.tile_on').length; // dirty
 		let subTotal = 0;
 		while (j > 0) subTotal += j--; // scoring uses tringle numbers
 		points[i].textContent = subTotal; // doc edit
@@ -485,9 +483,8 @@ function clear_game() {
   actions = [[0]];
   for (let i = 0; i < 5; i++) dice_locked[i] = false;
 
-  let c = $all('.locked_bar, .tile_on, .tile_off');
-  c.forEach(e => { e.classList.remove('locked_bar','tile_on','tile_off'); });
-  $all('.score').forEach(e => { e.children[10].children[0].classList.add('tile_off'); });
+  $all('.locked_stripe, .tile_on, .tile_off').forEach(e => { e.classList.remove('locked_stripe', 'tile_on', 'tile_off'); });
+  $all('.scoring .stripe').forEach(e => { e.children[10].children[0].classList.add('tile_off'); });
 
   $all('.dice:nth-child(1)').forEach(e => { e.style.display = 'flex'; }); // doc edit
   $all('.dice:nth-child(2)').forEach(e => { e.style.display = 'none'; }); // doc edit
@@ -512,7 +509,7 @@ function handleBackEvents() {
 	window.history.pushState({}, '');
 	window.addEventListener('popstate', () => {
 
-		simpleToast(2000, 'Double tap BACK\r\nto exit the app');
+		simpleToast(2000, 'Double tap BACK\r\nto exit the app [v1]');
 
 		setTimeout(() => {
 			window.history.pushState({}, '');
