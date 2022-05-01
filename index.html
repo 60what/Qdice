@@ -20,7 +20,7 @@
   <div class="dicepad"></div>
 
   <div class="card">
-    <div class="infotabs"><div></div><div></div></div>
+    <div class="infotabs"><div class="textSharp"></div><div class="textSharp"></div></div>
     <div class="scoring">
 	    <div class="stripe"></div>
 		<div class="stripe"></div>
@@ -50,17 +50,24 @@
 
   <div class="modal"></div>
 
-  <div class="alert reset">
-    <div class="boards">Start a new game:</div>
-    <div class="boards">
-      <div><span onclick="modal_to_reset(2);">Classic<br>Board</span></div>
-      <div><span onclick="modal_to_reset(3);">Color<br>Mix</span></div>
-      <div><span onclick="modal_to_reset(4);">Number<br>Mix</span></div>
+  <div class="resetMenu popup">
+    <div class="boards">Start a new game:
+		<div>
+			<span onclick="modal_to_reset(2);">Classic<br>Board</span>
+			<span onclick="modal_to_reset(3);">Color<br>Mix</span>
+			<span onclick="modal_to_reset(4);">Number<br>Mix</span>
+		</div>
     </div>
-    <div class="boards"><span onclick="modal_to_reset(1);">cancel</span></div>
+	<div class="undo">Last action:<br>
+		<span class="actionType"></span><span class="actionWhat textSharp"></span>
+		<div>
+			<span onclick="undo_last();">undo</span>
+			<span onclick="modal_to_reset(1);">close</span>
+		</div>
+    </div>
   </div>
 
-  <div class="toast"></div>
+  <div class="toast popup"></div>
 
 <script type="text/javascript" src="./qscript.js"></script>
 

@@ -18,7 +18,7 @@ function spawn(){
 	// ordered arguments: parent element, tag name (optional: class, text, onclick)
 	let e = document.createElement(arguments[1]);
 	if (arguments[2]) e.className = arguments[2];
-	if (arguments[3]) e.innerText = arguments[3];
+	if (arguments[3]) e.textContent = arguments[3];
 	if (arguments[4]) e.setAttribute('onclick', arguments[4]);
 	arguments[0].appendChild(e);
 	return e;	
@@ -27,7 +27,7 @@ function spawn(){
 function simpleToast(t, msg) {
 	let e = $('.toast');
 	e.style.visibility = 'visible'; // doc edit
-	e.innerText = msg;
+	e.textContent = msg;
 	setTimeout(() => { e.style.visibility = 'hidden'; }, t); // doc edit
 }
 
@@ -107,7 +107,7 @@ window.onload = populate();
 
 function populate() {
 
-    if (pwa) handleBackEvents(); //------------------------------------------------------------------------------------
+    if (pwa || !pwa) handleBackEvents(); //------------------------------------------------------------------------------------
 
     let s = $all('.scoring .stripe');
     for (let i = 0; i < 4; i++) {					// there are 4 stripes on the card for scoring
@@ -125,10 +125,10 @@ function populate() {
 		spawn(spawn($('.penalty'), 'div', 'tile', '', 'toggle_penalty(this);'), 'span');
     }
 
-    for (let i = 0; i < 6; i++) {					// add 6 tiles in the points area
+    for (let i = 0; i < 6; i++) {									// add 6 tiles in the points area
 		let pointsBox = spawn($('.points'), 'div', 'tile');	
-		spawn(pointsBox, 'span', '', '0');			// spans hold the category scores
-		if (i == 5) spawn(pointsBox, 'div');		// last gets an extra div for TOTAL
+		spawn(pointsBox, 'span', (i < 6 ? 'textSharp' : ''), '0');	// spans hold the category scores
+		if (i == 5) spawn(pointsBox, 'div');						// last gets an extra div for TOTAL
     }
 
 	for (let i = 0; i < 6; i++) {					// add 6 "cubes" that will contain 1 or 2 dice
@@ -184,6 +184,7 @@ function toggle_scorecard() {
 }
 
 function undo_last() {
+	if (actions.length == 1) return;
 	let a = actions.length - 1;
 	switch(actions[a][0]) {
 		case 1:
@@ -196,10 +197,30 @@ function undo_last() {
 			toggle_penalty($('.penalty .tile'));
 			break;
     }
+	displayLastAction();
 }
 
 function update_undone() {
-	$('.svg_reset span').innerText = (undone++ > 99 ? '99+' : undone < 1 ? 'X' : undone); // doc edit
+	$('.svg_reset span').textContent = (undone++ > 99 ? '99+' : undone < 1 ? 'X' : undone); // doc edit
+}
+
+function displayLastAction() {
+	hasButOnlyIf($('.undo'), 'none', actions.length == 1);
+	$('.actionWhat').classList.remove('c1','c2','c3','c4','c5');
+	
+	let a = actions[actions.length - 1][0];
+	let n = (a != 1 ? 0 : actions[actions.length - 1][2]);
+
+	if (a != 0) {
+		let c = 4;
+		if (a == 1 || a == 2) c = actions[actions.length - 1][1];
+		if (a == 1) n = $('.numbermixx') ? mix_n[c][n] : c < 2 ? n + 2 : 12 - n;
+		if (a == 1 && $('.colormixx')) c = mix_c[c][actions[actions.length - 1][2]] - 1;
+		$('.actionWhat').classList.add(`c${++c}`);
+	}
+
+	$('.actionType').textContent = `${a == 0 ? 'none' : a == 1 ? 'chose  ' : a == 2 ? 'removed  ' : ''}`; // doc edit
+	$('.actionWhat').textContent = (n > 0 ? `  ${n}` : ''); // doc edit
 }
 
 
@@ -463,10 +484,11 @@ function update_points() {
 
   function modal_to_reset(i) {
 
-    if (i < 1) { // actions = [[0]]; //--------------use to prevent undos in turn mode
-      $all('.modal, .reset').forEach(e => { e.style.visibility = 'visible'; }); // doc edit
+    if (i < 1) { // actions = [[0]]; //---use to prevent undos in turn mode -> actions = [actions[actions.length - 1]];
+		displayLastAction();
+      $all('.modal, .resetMenu').forEach(e => { e.style.visibility = 'visible'; }); // doc edit
     } else {
-      $all('.modal, .reset').forEach(e => { e.style.visibility = 'hidden'; }); // doc edit
+      $all('.modal, .resetMenu').forEach(e => { e.style.visibility = 'hidden'; }); // doc edit
       if (i > 1) {
         clear_game();
 		hasButOnlyIf($('.card'), 'colormixx', (i == 3));
@@ -509,7 +531,7 @@ function handleBackEvents() {
 	window.history.pushState({}, '');
 	window.addEventListener('popstate', () => {
 
-		simpleToast(2000, 'Double tap BACK\r\nto exit the app');
+		simpleToast(2000, 'Double tap BACK\r\nto clear and exit');
 
 		setTimeout(() => {
 			window.history.pushState({}, '');
