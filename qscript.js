@@ -107,7 +107,7 @@ window.onload = populate();
 
 function populate() {
 
-    if (pwa || !pwa) handleBackEvents(); //------------------------------------------------------------------------------------
+    if (pwa) handleBackEvents(); //------------------------------------------------------------------------------------
 
     let s = $all('.scoring .stripe');
     for (let i = 0; i < 4; i++) {					// there are 4 stripes on the card for scoring
@@ -126,13 +126,13 @@ function populate() {
     }
 
     for (let i = 0; i < 6; i++) {									// add 6 tiles in the points area
-		let pointsBox = spawn($('.points'), 'div', 'tile');	
+		let pointsBox = spawn($('.points'), 'div', `tile${i < 5 ? ' c' + (i + 1) : ''}`);	
 		spawn(pointsBox, 'span', (i < 6 ? 'textSharp' : ''), '0');	// spans hold the category scores
 		if (i == 5) spawn(pointsBox, 'div');						// last gets an extra div for TOTAL
     }
 
 	for (let i = 0; i < 6; i++) {					// add 6 "cubes" that will contain 1 or 2 dice
-		let c = spawn($('.dice_set'), 'div', 'cube'); // cubes will be a ref point for dice as they move
+		let c = spawn($('.dice_set'), 'div', `cube${i > 1 ? ' c' + (i - 1) : ''}`);
 		let d = spawn(c, 'div', 'dice', '', (i < 2 ? 'toggle_faces();' : `in_out(${i - 1}, 0);`));
 		for (let j = 0; j < 7; j++) {				// the first dice of each cube has 7 pips
 			let pip = `pip ${j == 3 ? 'r1 r3 r5' : 'r6'}`; // classes assign pips to roll values 
@@ -531,7 +531,7 @@ function handleBackEvents() {
 	window.history.pushState({}, '');
 	window.addEventListener('popstate', () => {
 
-		simpleToast(2000, 'Double tap BACK\r\nto clear and exit');
+		simpleToast(2000, 'Press BACK again\r\nto exit the app');
 
 		setTimeout(() => {
 			window.history.pushState({}, '');

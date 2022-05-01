@@ -90,18 +90,13 @@ body {
   align-items: center;
   justify-content: center; }
 
-.c1 { color: var(--red); }
-.c2 { color: var(--yel); }
-.c3 { color: var(--grn); }
-.c4 { color: var(--blu); }
-.c5 { color: var(--gry); }
-
 .textSharp { text-shadow: 0 0 .3em white; }
 
-.scoring .stripe:nth-child(1) { left: 5.6em; color: var(--red); }
-.scoring .stripe:nth-child(2) { left: 4.2em; color: var(--yel); }
-.scoring .stripe:nth-child(3) { left: 2.8em; color: var(--grn); }
-.scoring .stripe:nth-child(4) { left: 1.4em; color: var(--blu); }
+
+.scoring .stripe:nth-child(1) { left: 5.6em; }
+.scoring .stripe:nth-child(2) { left: 4.2em; }
+.scoring .stripe:nth-child(3) { left: 2.8em; }
+.scoring .stripe:nth-child(4) { left: 1.4em; }
 
 .colormixx .stripe:nth-child(1) .mixxbg:nth-child(-n + 9) { color: var(--grn); }
 .colormixx .stripe:nth-child(1) .mixxbg:nth-child(-n + 6) { color: var(--blu); }
@@ -150,13 +145,9 @@ body {
 .penalty .tile span { background-color: var(--prl); font-size: 38%; }
 .penalty .tile span::before { content: 'PASS'; }
 
-.points .tile { margin: .06em .1em .06em .1em;
-                             color: var(--drk); }
-.points .tile:nth-child(1) { color: var(--red); }
-.points .tile:nth-child(2) { color: var(--yel); }
-.points .tile:nth-child(3) { color: var(--grn); }
-.points .tile:nth-child(4) { color: var(--blu); }
-.points .tile:nth-child(5) { color: var(--gry); }
+
+
+.points .tile { margin: .06em .1em .06em .1em; }
 
 .points .tile:nth-child(-n + 4) span::before { content: '+\00a0'; }
 .points .tile:nth-child(5) span::before { content: '-\00a0'; }
@@ -165,6 +156,7 @@ body {
 .points .tile:nth-child(6) {
   top: .1em;
   opacity: 0;
+  color: var(--drk);
   align-items: flex-end;
   transition: opacity .5s; }
 
@@ -230,15 +222,9 @@ body {
 
 
 
-/* choppy sliding might be caused if:
-   start and stop values are not declared?
-   length unit types differ?                     ------------------------------- */
-
 .cube { position: absolute; color: white; left: 2rem; top: 2rem; }
-.cube:nth-child(3) { top: 5rem; color: var(--red); }
-.cube:nth-child(4) { top: 5rem; color: var(--yel); }
-.cube:nth-child(5) { top: 8rem; color: var(--grn); }
-.cube:nth-child(6) { top: 8rem; color: var(--blu); }
+.cube:nth-child(n + 3) { top: 5rem; }
+.cube:nth-child(n + 5) { top: 8rem; }
 .cube:nth-child(even) { left: 5rem; }
 
 .cardOut .cube { left: 7.39rem; font-size: .6em; }
@@ -314,12 +300,15 @@ body {
 
 .toast {
   top: .4rem;
+  white-space: pre;
   padding: .2rem .8rem .2rem .8rem; }
 
 
 
 .resetMenu { width: 8rem; height: 8rem; }
-.resetMenu > div { padding-top: 1rem; }
+
+.resetMenu > div { padding-top: .9rem; }
+
 .resetMenu > div > div {
 	display: flex;
 	justify-content: center;
@@ -338,13 +327,18 @@ body {
 	width: 2.2rem; }
 
 .resetMenu > .undo > div > span {
-	margin: .1rem .2rem 0 .2rem;
 	height: 1rem;
 	width: 1.6rem; }
 
 .undo.none > div > span:first-child { opacity: .3; }
 
 .undo > span { white-space: pre; }
+
+.c1 { color: var(--red); }
+.c2 { color: var(--yel); }
+.c3 { color: var(--grn); }
+.c4 { color: var(--blu); }
+.c5 { color: var(--gry); }
 
 .c1.actionWhat::before { content: 'RED'; }
 .c2.actionWhat::before { content: 'YELLOW'; }
