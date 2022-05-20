@@ -98,7 +98,8 @@ function svg_bg(e) {
 
 function svg_inline(e) {
 	let c = Array.from(e.classList).find(x => x.includes('svg_'));
-	e.innerHTML = svg.get(c); // doc edit
+	let s = svg.get(c).replace(`<svg`, `<svg xmlns='http://www.w3.org/2000/svg'`);
+	e.innerHTML = s; // doc edit
 }
 
 
