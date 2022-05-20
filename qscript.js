@@ -147,7 +147,8 @@ function populate() {
 		if (i > 1) spawn(c, 'div', 'dice', '', `in_out(${1 - i}, 0);`); // only last 4 get 2nd ghost dice
 	}
 
-	svg_inline($('.svg_scorecard'));
+//	svg_inline($('.svg_scorecard'));
+	svg_bg($('.svg_scorecard'));
     svg_bg($('.svg_reset'));
     update_undone();
   }
